@@ -120,7 +120,7 @@ jobs:
 
       - name: Download Widoco
         run: |
-          WIDOCO_VERSION=1.4.20
+          WIDOCO_VERSION=1.4.5
           wget -q https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar -O widoco.jar
           java -jar widoco.jar -version
 
