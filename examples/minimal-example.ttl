@@ -4,6 +4,7 @@
 @prefix ids: <https://w3id.org/idsa/core/> .
 @prefix odrl: <http://www.w3.org/ns/odrl/2/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 ### Ejemplo mínimo válido que pasa la validación SHACL
 

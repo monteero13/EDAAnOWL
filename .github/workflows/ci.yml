@@ -1,26 +1,160 @@
-name: CI
-on: [push, pull_request]
+name: EDAAnOWL CI/CD
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+# Necesario para poder hacer commit de /documentation
+permissions:
+  contents: write
+
+concurrency:
+  group: edaanowl-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
+    name: "🔍 Validate ontology & examples"
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m pip install --upgrade pip && pip install rdflib pyshacl
-      - name: RDF syntax check
-        run: python scripts/check_rdf.py
-      - name: SHACL validation
-        run: pyshacl -s shapes/edaan-shapes.ttl -d examples/minimal-example.ttl -m -f human -o shacl-report.txt || true
-      - name: Fail build on Violations
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install Python deps
         run: |
-          if grep -q "Violation" shacl-report.txt; then
-            echo "SHACL Violations detected"
-            cat shacl-report.txt
+          python -m pip install --upgrade pip
+          pip install rdflib pyshacl requests
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'   # Widoco/ROBOT funcionan bien con 11 o 17; usamos 17 estable
+
+      - name: Download ROBOT
+        run: |
+          wget -q -O robot.jar https://github.com/ontodev/robot/releases/download/v1.9.4/robot.jar
+          java -jar robot.jar --version
+
+      - name: RDF syntax check (rdflib via script)
+        run: python scripts/check_rdf.py
+
+      - name: OWL profile & basic consistency (ROBOT)
+        run: |
+          mkdir -p reports
+          # validate: perfil OWL, PURLs, IRIs, etc.
+          java -jar robot.jar validate --input ontology/edaan-owl.ttl --output reports/robot-validate.tsv || true
+          echo "ROBOT validate report:"
+          cat reports/robot-validate.tsv || true
+
+          # reason + report (clasificación con ELK; solo informativo)
+          java -jar robot.jar reason --input ontology/edaan-owl.ttl --reasoner ELK --output reports/edaan-owl-classified.ttl || true
+
+      - name: SHACL (minimal example MUST pass)
+        run: |
+          mkdir -p reports
+          pyshacl -s shapes/edaan-shapes.ttl -d examples/minimal-example.ttl -m -f human -o reports/shacl-minimal.txt
+          echo "📄 SHACL (minimal):"
+          cat reports/shacl-minimal.txt
+          if grep -qi "violation" reports/shacl-minimal.txt; then
+            echo "❌ SHACL violations in minimal example"
             exit 1
           fi
-      - uses: actions/upload-artifact@v4
+
+      - name: SHACL (ontology info-only)
+        run: |
+          pyshacl -s shapes/edaan-shapes.ttl -d ontology/edaan-owl.ttl -m -f human -o reports/shacl-ontology.txt || true
+          echo "📄 SHACL (ontology):"
+          cat reports/shacl-ontology.txt || true
+
+      - name: Validate all examples (info-only)
+        run: |
+          mkdir -p reports
+          for ex in examples/*.ttl examples/*/*.ttl; do
+            if [ -f "$ex" ]; then
+              echo "Validating example: $ex"
+              java -jar robot.jar verify --input "$ex" --output-dir reports/ || echo "⚠️ Issues in $ex"
+            fi
+          done
+
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: shacl-report
-          path: shacl-report.txt
+          name: validation-reports
+          path: reports/
+          retention-days: 30
+
+  docs:
+    name: "📚 Build Widoco docs -> /documentation"
+    needs: validate
+    runs-on: ubuntu-latest
+
+    # Solo generamos docs en pushes a la rama principal (evita PRs escribiendo en /documentation)
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Download Widoco
+        run: |
+          WIDOCO_VERSION=1.4.20
+          wget -q https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar -O widoco.jar
+          java -jar widoco.jar -version
+
+      - name: Build docs with Widoco
+        run: |
+          # Limpia la salida previa pero conserva .gitkeep (si lo usas)
+          mkdir -p documentation
+          find documentation -mindepth 1 -not -name '.gitkeep' -exec rm -rf {} +
+
+          # Genera la documentación desde ontology/edaan-owl.ttl
+          java -jar widoco.jar \
+            -ontFile ontology/edaan-owl.ttl \
+            -outFolder documentation \
+            -getOntologyMetadata \
+            -rewriteAll \
+            -webVowl \
+            -htaccess true \
+            -lang en
+
+          # Alias cómodo a index.html
+          if [ -f documentation/index-en.html ]; then
+            cp documentation/index-en.html documentation/index.html
+          fi
+
+      - name: Upload built docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: widoco-documentation
+          path: documentation/
+          retention-days: 14
+
+      - name: Commit documentation to repo
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(docs): regenerate Widoco documentation"
+          file_pattern: documentation/*
+          add_options: '-A'

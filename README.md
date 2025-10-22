@@ -9,3 +9,6 @@ This repository ships:
 - JSON-LD context
 - CI (RDF parse + SHACL + SPARQL tests)
 - Validator container (Docker) and docs
+
+
+![CI](https://github.com/KhaosResearch/EDAAnOWL/actions/workflows/ci.yml/badge.svg)
