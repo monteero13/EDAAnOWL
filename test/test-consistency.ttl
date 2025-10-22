@@ -1,0 +1,25 @@
+@prefix : <https://w3id.org/EDAAnOWL/> .
+@prefix test: <https://w3id.org/EDAAnOWL/test/> .
+@prefix ids: <https://w3id.org/idsa/core/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+### Test válido - debería pasar
+test:ValidApp a ids:DataApp ;
+    dct:title "Valid Test App"@en ;
+    :declaresAlgorithm :TestAlgorithm ;
+    :solvesProblem :TestProblem ;
+    :hasDomainSector :agriculture .
+
+test:ValidResource a ids:DataResource ;
+    dct:title "Valid Test Resource"@en ;
+    :hasDomainSector :agriculture ;
+    :conformsToProfile test:TestProfile .
+
+test:TestProfile a :DataProfile ;
+    dct:title "Test Profile"@en .
+
+:TestAlgorithm a bigalg:Algorithm ;
+    rdfs:label "Test Algorithm"@en .
+
+:TestProblem a bigprob:Problem ;
+    rdfs:label "Test Problem"@en .

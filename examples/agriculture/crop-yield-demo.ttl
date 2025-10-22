@@ -1,0 +1,53 @@
+@prefix : <https://w3id.org/EDAAnOWL/> .
+@prefix ex: <https://w3id.org/EDAAnOWL/examples/agriculture/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ids: <https://w3id.org/idsa/core/> .
+@prefix odrl: <http://www.w3.org/ns/odrl/2/> .
+
+ex:AndalusiaCropYield2024 a ids:DataResource ;
+    dct:title "Andalusia Crop Yield Dataset 2024"@en ;
+    dct:description "Annual crop yield data for Andalusia region, 2024"@en ;
+    :hasDomainSector :agriculture ;
+    :topic :agro_wheat, :agro_olive ;
+    :conformsToProfile ex:AgriYieldProfile ;
+    :hasOffer ex:AgriDataOffer ;
+    :supportContact "agri-data@example.org" .
+
+ex:AgriYieldProfile a :DataProfile ;
+    dct:title "Agricultural Yield Profile"@en ;
+    :declaresDataClass :DataClassExample ;
+    :declaresObservedProperty :yield ;
+    :profileSpatialResolution "municipality" ;
+    :profileTemporalResolution "P1Y"^^xsd:duration ;
+    :profileCRS "EPSG:4326" .
+
+ex:CropPredictorApp a :PredictionApp ;
+    dct:title "Crop Yield Predictor"@en ;
+    dct:description "Machine learning app for crop yield prediction"@en ;
+    :declaresAlgorithm :RFAlgorithmExample ;
+    :solvesProblem :PredictionProblemExample ;
+    :requiresProfile ex:AgriYieldProfile ;
+    :hasDomainSector :agriculture ;
+    :compatibleWith ex:AndalusiaCropYield2024 ;
+    :supportContact "support@agri-apps.example.org" .
+
+ex:AgriDataOffer a ids:ContractOffer ;
+    dct:title "Agricultural Data Research License"@en ;
+    odrl:permission [
+        odrl:action odrl:use ;
+        odrl:constraint [
+            odrl:leftOperand odrl:purpose ;
+            odrl:operator odrl:eq ;
+            odrl:rightOperand "research"
+        ]
+    ] .
+
+### Individuos locales para BIGOWL (en lugar de importar todo BIGOWL)
+:RFAlgorithmExample a bigalg:Algorithm ;
+    rdfs:label "Random Forest Predictor"@en .
+
+:PredictionProblemExample a bigprob:Problem ;
+    rdfs:label "Yield Prediction Problem"@en .
+
+:DataClassExample a bigdat:Data ;
+    rdfs:label "Agricultural Time Series Data"@en .

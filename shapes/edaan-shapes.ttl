@@ -1,0 +1,49 @@
+@prefix : <https://w3id.org/EDAAnOWL/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ids: <https://w3id.org/idsa/core/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:EDAAanValidationShape a sh:NodeShape ;
+    sh:targetClass ids:DataApp ;
+    rdfs:label "EDAAn Data App Validation"@en ;
+    rdfs:comment "Validates that Data Apps have required properties"@en .
+
+:DataAppDomainSectorShape a sh:NodeShape ;
+    sh:targetClass ids:DataApp ;
+    sh:property [
+        sh:path :hasDomainSector ;
+        sh:minCount 1 ;
+        sh:message "DataApp must have at least one domain sector"@en ;
+    ] .
+
+:DataAppAlgorithmShape a sh:NodeShape ;
+    sh:targetClass ids:DataApp ;
+    sh:property [
+        sh:path :declaresAlgorithm ;
+        sh:minCount 1 ;
+        sh:message "DataApp must declare at least one algorithm"@en ;
+    ] .
+
+:DataResourceProfileShape a sh:NodeShape ;
+    sh:targetClass ids:DataResource ;
+    sh:property [
+        sh:path :conformsToProfile ;
+        sh:minCount 1 ;
+        sh:message "DataResource must conform to at least one profile"@en ;
+    ] .
+
+:MetricValidationShape a sh:NodeShape ;
+    sh:targetClass :Metric ;
+    sh:property [
+        sh:path :metricName ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Metric must have a name"@en ;
+    ] ;
+    sh:property [
+        sh:path :metricValue ;
+        sh:minCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:message "Metric must have a numeric value"@en ;
+    ] .

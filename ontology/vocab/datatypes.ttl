@@ -1,0 +1,32 @@
+@prefix : <https://w3id.org/EDAAnOWL/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+:DataTypeScheme a skos:ConceptScheme ;
+    dct:title "Data Type Categories"@en ;
+    dct:description "Categories for classifying data types and formats."@en .
+
+:timeseries a skos:Concept ;
+    skos:prefLabel "Time Series"@en ;
+    skos:definition "Data points indexed in time order"@en ;
+    skos:inScheme :DataTypeScheme .
+
+:georaster a skos:Concept ;
+    skos:prefLabel "Geospatial Raster"@en ;
+    skos:definition "Grid-based geospatial data (satellite imagery, DEM)"@en ;
+    skos:inScheme :DataTypeScheme .
+
+:geovector a skos:Concept ;
+    skos:prefLabel "Geospatial Vector"@en ;
+    skos:definition "Vector-based geospatial data (points, lines, polygons)"@en ;
+    skos:inScheme :DataTypeScheme .
+
+:tabular a skos:Concept ;
+    skos:prefLabel "Tabular"@en ;
+    skos:definition "Structured data in rows and columns"@en ;
+    skos:inScheme :DataTypeScheme .
+
+:textual a skos:Concept ;
+    skos:prefLabel "Textual"@en ;
+    skos:definition "Unstructured or semi-structured text data"@en ;
+    skos:inScheme :DataTypeScheme .
