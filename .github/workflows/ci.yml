@@ -44,7 +44,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'   # Widoco/ROBOT funcionan bien con 11 o 17; usamos 17 estable
+          java-version: '17'   # ROBOT funciona bien con 17
 
       - name: Download ROBOT
         run: |
@@ -104,17 +104,19 @@ jobs:
     name: "📚 Build Widoco docs -> /documentation"
     needs: validate
     runs-on: ubuntu-latest
+
+    # Solo generamos docs en pushes a la rama principal (evita PRs escribiendo en /documentation)
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Setup Java 11 (Widoco compatibility)
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '11'   # Widoco necesita Java 11 por compatibilidad
 
       - name: Download Widoco
         run: |
@@ -127,7 +129,7 @@ jobs:
           rm -rf documentation
           mkdir -p documentation
 
-          # Genera la documentación
+          # Genera la documentación desde ontology/edaan-owl.ttl
           java -jar widoco.jar \
             -ontFile ontology/edaan-owl.ttl \
             -outFolder documentation \
@@ -137,12 +139,19 @@ jobs:
             -htaccess \
             -lang en
 
-          # Crea index.html si existe index-en.html
+          # Alias cómodo a index.html
           if [ -f "documentation/index-en.html" ]; then
             cp documentation/index-en.html documentation/index.html
           fi
 
-      - name: Commit and push docs
+      - name: Upload built docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: widoco-documentation
+          path: documentation/
+          retention-days: 14
+
+      - name: Commit and push documentation
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
