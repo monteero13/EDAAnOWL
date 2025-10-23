@@ -104,8 +104,6 @@ jobs:
     name: "📚 Build Widoco docs -> /documentation"
     needs: validate
     runs-on: ubuntu-latest
-
-    # Solo generamos docs en pushes a la rama principal (evita PRs escribiendo en /documentation)
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
 
     steps:
@@ -122,15 +120,13 @@ jobs:
         run: |
           WIDOCO_VERSION=1.4.5
           wget -q https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar -O widoco.jar
-          java -jar widoco.jar -version
 
       - name: Build docs with Widoco
         run: |
-          # Limpia la salida previa pero conserva .gitkeep (si lo usas)
+          # Limpia y genera documentación
           mkdir -p documentation
-          find documentation -mindepth 1 -not -name '.gitkeep' -exec rm -rf {} +
-
-          # Genera la documentación desde ontology/edaan-owl.ttl
+          find documentation -mindepth 1 -not -name '.gitkeep' -exec rm -rf {} + 2>/dev/null || true
+          
           java -jar widoco.jar \
             -ontFile ontology/edaan-owl.ttl \
             -outFolder documentation \
@@ -140,21 +136,12 @@ jobs:
             -htaccess true \
             -lang en
 
-          # Alias cómodo a index.html
-          if [ -f documentation/index-en.html ]; then
-            cp documentation/index-en.html documentation/index.html
-          fi
+          [ -f documentation/index-en.html ] && cp documentation/index-en.html documentation/index.html
 
-      - name: Upload built docs artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: widoco-documentation
-          path: documentation/
-          retention-days: 14
-
-      - name: Commit documentation to repo
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore(docs): regenerate Widoco documentation"
-          file_pattern: documentation/*
-          add_options: '-A'
+      - name: Commit and push docs
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add documentation/
+          git diff --cached --quiet || git commit -m "chore(docs): regenerate Widoco documentation"
+          git push
