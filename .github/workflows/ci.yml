@@ -123,20 +123,24 @@ jobs:
 
       - name: Build docs with Widoco
         run: |
-          # Limpia y genera documentación
+          # Elimina y recrea la carpeta documentation completamente
+          rm -rf documentation
           mkdir -p documentation
-          find documentation -mindepth 1 -not -name '.gitkeep' -exec rm -rf {} + 2>/dev/null || true
-          
+
+          # Genera la documentación
           java -jar widoco.jar \
             -ontFile ontology/edaan-owl.ttl \
             -outFolder documentation \
             -getOntologyMetadata \
             -rewriteAll \
             -webVowl \
-            -htaccess true \
+            -htaccess \
             -lang en
 
-          [ -f documentation/index-en.html ] && cp documentation/index-en.html documentation/index.html
+          # Crea index.html si existe index-en.html
+          if [ -f "documentation/index-en.html" ]; then
+            cp documentation/index-en.html documentation/index.html
+          fi
 
       - name: Commit and push docs
         run: |
