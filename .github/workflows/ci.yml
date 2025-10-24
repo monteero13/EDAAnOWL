@@ -111,41 +111,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java 11 (Widoco)
+      - name: Setup Java 11 (Widoco + ROBOT)
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '11'
+          java-version: '11'   # Usar Java 11 para ambas herramientas
 
-      - name: Setup Java 17 (ROBOT)
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Download ROBOT
+      - name: Download ROBOT (Java 11 compatible)
         run: |
           wget -q -O robot.jar https://github.com/ontodev/robot/releases/download/v1.9.4/robot.jar
           java -jar robot.jar --version
 
-      # Cachea la carpeta .cache/widoco y usa una ruta estable para el jar
-      - name: Cache Widoco jar
-        id: cache-widoco
-        uses: actions/cache@v4
-        with:
-          path: .cache/widoco
-          key: widoco-1.4.5
-
       - name: Download Widoco
-        if: steps.cache-widoco.outputs.cache-hit != 'true'
         run: |
-          set -e
-          mkdir -p .cache/widoco
           WIDOCO_VERSION=1.4.5
-          curl -fL "https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar" \
-            -o .cache/widoco/widoco.jar
-          test -s .cache/widoco/widoco.jar
-          java -jar .cache/widoco/widoco.jar -version
+          wget -q https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar -O widoco.jar
+          java -jar widoco.jar -version
 
       - name: Verify ontology file exists
         run: |
@@ -158,11 +139,9 @@ jobs:
       - name: Build docs with Widoco (to /docs/ontology)
         run: |
           set -e
-          WIDOCO_JAR=.cache/widoco/widoco.jar
           OUT_DIR="docs/ontology"
           ONT_PATH="docs/ontology/edaan-owl.ttl"
           
-          test -s "$WIDOCO_JAR" || { echo "Widoco jar not found at $WIDOCO_JAR"; exit 1; }
           test -f "$ONT_PATH" || { echo "Ontology file not found at $ONT_PATH"; exit 1; }
 
           echo "Building documentation for: $ONT_PATH"
@@ -182,7 +161,7 @@ jobs:
                  "$OUT_DIR/edaan-owl.nt"
 
           # Genera doc desde la ontología en /docs/ontology
-          java -jar "$WIDOCO_JAR" \
+          java -jar widoco.jar \
             -ontFile "$ONT_PATH" \
             -outFolder "$OUT_DIR" \
             -getOntologyMetadata \
