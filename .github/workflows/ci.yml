@@ -14,28 +14,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  changes:
-    name: "📋 Detect changes"
-    runs-on: ubuntu-latest
-    outputs:
-      ontology_changed: ${{ steps.changes.outputs.ontology_changed }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Get changed files
-        uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            ontology_changed:
-              - 'docs/ontology/**'
-              - 'docs/shapes/**'
-
   validate:
     name: "🔍 Validate ontology & examples"
     runs-on: ubuntu-latest
-    needs: changes
 
     steps:
       - name: Checkout
@@ -122,10 +103,9 @@ jobs:
   docs:
     name: "📚 Build Widoco docs -> /docs/ontology"
     runs-on: ubuntu-latest
-    needs: [changes, validate]
-    if: |
-      (github.event_name == 'workflow_dispatch') ||
-      (github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && needs.changes.outputs.ontology_changed == 'true')
+    needs: validate
+    # Solo generamos docs en pushes a la rama principal (evita PRs escribiendo en /docs/ontology)
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout
@@ -219,5 +199,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/ontology/
-          git diff --cached --quiet || git commit -m "chore(docs): regenerate Widoco documentation (ontology changed)"
+          git diff --cached --quiet || git commit -m "chore(docs): regenerate Widoco documentation"
           git push
