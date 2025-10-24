@@ -138,42 +138,55 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
+      # Cachea la carpeta .cache/widoco y usa una ruta estable para el jar
       - name: Cache Widoco jar
-        id: cache  # Add an id to the cache step
+        id: cache-widoco
         uses: actions/cache@v4
         with:
-          path: widoco.jar
+          path: .cache/widoco
           key: widoco-1.4.5
+
       - name: Download Widoco
-        if: steps.cache.outputs.cache-hit != 'true' && steps.cache.outputs.cache-hit != ''
+        if: steps.cache-widoco.outputs.cache-hit != 'true'
         run: |
+          set -e
+          mkdir -p .cache/widoco
           WIDOCO_VERSION=1.4.5
-          wget -q "https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar" -O widoco.jar
-          java -jar widoco.jar -version
+          curl -fL "https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar" \
+            -o .cache/widoco/widoco.jar
+          test -s .cache/widoco/widoco.jar
+          java -jar .cache/widoco/widoco.jar -version
 
       - name: Build docs with Widoco (to /docs/ontology)
         env:
           OUT_DIR: docs/ontology
         run: |
+          set -e
+          WIDOCO_JAR=.cache/widoco/widoco.jar
+          test -s "$WIDOCO_JAR" || { echo "Widoco jar not found at $WIDOCO_JAR"; exit 1; }
+
           mkdir -p "$OUT_DIR"
+
           # Limpieza selectiva: elimina SOLO lo que genera Widoco
           rm -rf "$OUT_DIR/doc" \
                  "$OUT_DIR/WebVowl" \
                  "$OUT_DIR/sections" \
-                 "$OUT_DIR/Ontology*" \
+                 "$OUT_DIR/Ontology"* \
                  "$OUT_DIR/index.html" \
                  "$OUT_DIR/index-en.html" \
                  "$OUT_DIR/.htaccess"
 
-          java -jar widoco.jar \
+          # Genera doc desde la ontología en /docs/ontology
+          java -jar "$WIDOCO_JAR" \
             -ontFile "$ONT_PATH" \
             -outFolder "$OUT_DIR" \
             -getOntologyMetadata \
             -rewriteAll \
             -webVowl \
-            -htaccess \
+            -htaccess true \
             -lang en
 
+          # Alias a index.html si existe index-en.html
           if [ -f "$OUT_DIR/index-en.html" ]; then
             cp "$OUT_DIR/index-en.html" "$OUT_DIR/index.html"
           fi
