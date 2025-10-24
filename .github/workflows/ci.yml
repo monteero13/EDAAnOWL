@@ -117,6 +117,17 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
+      - name: Setup Java 17 (ROBOT)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Download ROBOT
+        run: |
+          wget -q -O robot.jar https://github.com/ontodev/robot/releases/download/v1.9.4/robot.jar
+          java -jar robot.jar --version
+
       # Cachea la carpeta .cache/widoco y usa una ruta estable para el jar
       - name: Cache Widoco jar
         id: cache-widoco
@@ -157,16 +168,18 @@ jobs:
           echo "Building documentation for: $ONT_PATH"
           echo "Output directory: $OUT_DIR"
 
-          mkdir -p "$OUT_DIR"
-
-          # Limpieza selectiva: elimina SOLO lo que genera Widoco
+          # Limpieza selectiva: solo eliminar lo que genera Widoco, no la ontología original
           rm -rf "$OUT_DIR/doc" \
                  "$OUT_DIR/WebVowl" \
                  "$OUT_DIR/sections" \
                  "$OUT_DIR/Ontology"* \
                  "$OUT_DIR/index.html" \
                  "$OUT_DIR/index-en.html" \
-                 "$OUT_DIR/.htaccess"
+                 "$OUT_DIR/.htaccess" \
+                 "$OUT_DIR/edaan-owl.owl" \
+                 "$OUT_DIR/edaan-owl.jsonld" \
+                 "$OUT_DIR/edaan-owl.rdf" \
+                 "$OUT_DIR/edaan-owl.nt"
 
           # Genera doc desde la ontología en /docs/ontology
           java -jar "$WIDOCO_JAR" \
@@ -178,13 +191,37 @@ jobs:
             -htaccess \
             -lang en
 
-          # Alias a index.html si existe index-en.html
+          # Generar formatos adicionales usando ROBOT
+          echo "Generating additional formats..."
+          java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.owl" --format owl
+          java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.jsonld" --format jsonld
+          java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.rdf" --format rdfxml
+          java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.nt" --format nt
+
+          # Mover documentación de doc/ al directorio principal
+          if [ -d "$OUT_DIR/doc" ]; then
+            echo "Moving documentation from doc/ to root..."
+            mv "$OUT_DIR"/doc/* "$OUT_DIR"/
+            rmdir "$OUT_DIR/doc"
+            
+            # Actualizar rutas en .htaccess
+            if [ -f "$OUT_DIR/.htaccess" ]; then
+              sed -i 's|/doc/|/|g' "$OUT_DIR/.htaccess"
+              sed -i 's|doc/||g' "$OUT_DIR/.htaccess"
+            fi
+            
+            # Actualizar rutas en archivos HTML
+            find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|href="doc/|href="|g' {} \;
+            find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|src="doc/|src="|g' {} \;
+            find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|url(/doc/|url(/|g' {} \;
+          fi
+
+          # Alias a index.html
           if [ -f "$OUT_DIR/index-en.html" ]; then
             cp "$OUT_DIR/index-en.html" "$OUT_DIR/index.html"
           fi
 
-          # Verificar que se generó la documentación
-          echo "Generated documentation content:"
+          echo "✅ Final content in $OUT_DIR:"
           ls -la "$OUT_DIR/"
 
       - name: Upload built docs artifact
