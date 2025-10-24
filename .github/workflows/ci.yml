@@ -5,6 +5,7 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Necesario para poder hacer commit de /documentation
 permissions:
   contents: write
 
@@ -12,34 +13,30 @@ concurrency:
   group: edaanowl-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  ONT_PATH: docs/ontology/edaan-owl.ttl
-  SHAPES_PATH: docs/shapes/edaan-shapes.ttl
-
 jobs:
-  # 1) Detecta si cambió la ontología
   changes:
-    name: "🧭 Detect ontology changes"
+    name: "📋 Detect changes"
     runs-on: ubuntu-latest
     outputs:
-      ontology_changed: ${{ steps.filter.outputs.ontology }}
+      ontology_changed: ${{ steps.changes.outputs.ontology_changed }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # necesario para diff correcto
-      - name: Paths filter
-        id: filter
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get changed files
         uses: dorny/paths-filter@v3
+        id: changes
         with:
           filters: |
-            ontology:
-              - ${{ env.ONT_PATH }}
+            ontology_changed:
+              - 'ontology/**'
+              - 'shapes/**'
 
-  # 2) Validación (se ejecuta siempre)
   validate:
     name: "🔍 Validate ontology & examples"
     runs-on: ubuntu-latest
     needs: changes
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -62,11 +59,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install rdflib pyshacl requests
 
-      - name: Setup Java (ROBOT)
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '17'   # ROBOT funciona bien con 17
 
       - name: Download ROBOT
         run: |
@@ -74,20 +71,23 @@ jobs:
           java -jar robot.jar --version
 
       - name: RDF syntax check (rdflib via script)
-        run: python docs/scripts/check_rdf.py
+        run: python scripts/check_rdf.py
 
       - name: OWL profile & basic consistency (ROBOT)
         run: |
           mkdir -p reports
-          java -jar robot.jar validate --input "$ONT_PATH" --output reports/robot-validate.tsv || true
+          # validate: perfil OWL, PURLs, IRIs, etc.
+          java -jar robot.jar validate --input ontology/edaan-owl.ttl --output reports/robot-validate.tsv || true
           echo "ROBOT validate report:"
           cat reports/robot-validate.tsv || true
-          java -jar robot.jar reason --input "$ONT_PATH" --reasoner ELK --output reports/edaan-owl-classified.ttl || true
+
+          # reason + report (clasificación con ELK; solo informativo)
+          java -jar robot.jar reason --input ontology/edaan-owl.ttl --reasoner ELK --output reports/edaan-owl-classified.ttl || true
 
       - name: SHACL (minimal example MUST pass)
         run: |
           mkdir -p reports
-          pyshacl -s "$SHAPES_PATH" -d docs/examples/minimal-example.ttl -m -f human -o reports/shacl-minimal.txt
+          pyshacl -s shapes/edaan-shapes.ttl -d examples/minimal-example.ttl -m -f human -o reports/shacl-minimal.txt
           echo "📄 SHACL (minimal):"
           cat reports/shacl-minimal.txt
           if grep -qi "violation" reports/shacl-minimal.txt; then
@@ -97,14 +97,14 @@ jobs:
 
       - name: SHACL (ontology info-only)
         run: |
-          pyshacl -s "$SHAPES_PATH" -d "$ONT_PATH" -m -f human -o reports/shacl-ontology.txt || true
+          pyshacl -s shapes/edaan-shapes.ttl -d ontology/edaan-owl.ttl -m -f human -o reports/shacl-ontology.txt || true
           echo "📄 SHACL (ontology):"
           cat reports/shacl-ontology.txt || true
 
       - name: Validate all examples (info-only)
         run: |
           mkdir -p reports
-          for ex in docs/examples/*.ttl docs/examples/*/*.ttl; do
+          for ex in examples/*.ttl examples/*/*.ttl; do
             if [ -f "$ex" ]; then
               echo "Validating example: $ex"
               java -jar robot.jar verify --input "$ex" --output-dir reports/ || echo "⚠️ Issues in $ex"
@@ -119,7 +119,6 @@ jobs:
           path: reports/
           retention-days: 30
 
-  # 3) Docs (solo cuando cambia la ontología o ejecución manual)
   docs:
     name: "📚 Build Widoco docs -> /docs/ontology"
     runs-on: ubuntu-latest
@@ -157,13 +156,26 @@ jobs:
           test -s .cache/widoco/widoco.jar
           java -jar .cache/widoco/widoco.jar -version
 
+      - name: Verify ontology file exists
+        run: |
+          if [ ! -f "ontology/edaan-owl.ttl" ]; then
+            echo "❌ Error: ontology file not found at ontology/edaan-owl.ttl"
+            exit 1
+          fi
+          echo "✅ Ontology file found: ontology/edaan-owl.ttl"
+
       - name: Build docs with Widoco (to /docs/ontology)
-        env:
-          OUT_DIR: docs/ontology
         run: |
           set -e
           WIDOCO_JAR=.cache/widoco/widoco.jar
+          OUT_DIR="docs/ontology"
+          ONT_PATH="ontology/edaan-owl.ttl"
+          
           test -s "$WIDOCO_JAR" || { echo "Widoco jar not found at $WIDOCO_JAR"; exit 1; }
+          test -f "$ONT_PATH" || { echo "Ontology file not found at $ONT_PATH"; exit 1; }
+
+          echo "Building documentation for: $ONT_PATH"
+          echo "Output directory: $OUT_DIR"
 
           mkdir -p "$OUT_DIR"
 
@@ -183,7 +195,7 @@ jobs:
             -getOntologyMetadata \
             -rewriteAll \
             -webVowl \
-            -htaccess true \
+            -htaccess \
             -lang en
 
           # Alias a index.html si existe index-en.html
@@ -191,11 +203,15 @@ jobs:
             cp "$OUT_DIR/index-en.html" "$OUT_DIR/index.html"
           fi
 
+          # Verificar que se generó la documentación
+          echo "Generated documentation content:"
+          ls -la "$OUT_DIR/"
+
       - name: Upload built docs artifact
         uses: actions/upload-artifact@v4
         with:
           name: widoco-documentation
-          path: docs/ontology/doc/
+          path: docs/ontology/
           retention-days: 14
 
       - name: Commit and push documentation
