@@ -29,8 +29,8 @@ jobs:
         with:
           filters: |
             ontology_changed:
-              - 'ontology/**'
-              - 'shapes/**'
+              - 'docs/ontology/**'
+              - 'docs/shapes/**'
 
   validate:
     name: "🔍 Validate ontology & examples"
@@ -71,23 +71,23 @@ jobs:
           java -jar robot.jar --version
 
       - name: RDF syntax check (rdflib via script)
-        run: python scripts/check_rdf.py
+        run: python docs/scripts/check_rdf.py
 
       - name: OWL profile & basic consistency (ROBOT)
         run: |
           mkdir -p reports
           # validate: perfil OWL, PURLs, IRIs, etc.
-          java -jar robot.jar validate --input ontology/edaan-owl.ttl --output reports/robot-validate.tsv || true
+          java -jar robot.jar validate --input docs/ontology/edaan-owl.ttl --output reports/robot-validate.tsv || true
           echo "ROBOT validate report:"
           cat reports/robot-validate.tsv || true
 
           # reason + report (clasificación con ELK; solo informativo)
-          java -jar robot.jar reason --input ontology/edaan-owl.ttl --reasoner ELK --output reports/edaan-owl-classified.ttl || true
+          java -jar robot.jar reason --input docs/ontology/edaan-owl.ttl --reasoner ELK --output reports/edaan-owl-classified.ttl || true
 
       - name: SHACL (minimal example MUST pass)
         run: |
           mkdir -p reports
-          pyshacl -s shapes/edaan-shapes.ttl -d examples/minimal-example.ttl -m -f human -o reports/shacl-minimal.txt
+          pyshacl -s docs/shapes/edaan-shapes.ttl -d docs/examples/minimal-example.ttl -m -f human -o reports/shacl-minimal.txt
           echo "📄 SHACL (minimal):"
           cat reports/shacl-minimal.txt
           if grep -qi "violation" reports/shacl-minimal.txt; then
@@ -97,14 +97,14 @@ jobs:
 
       - name: SHACL (ontology info-only)
         run: |
-          pyshacl -s shapes/edaan-shapes.ttl -d ontology/edaan-owl.ttl -m -f human -o reports/shacl-ontology.txt || true
+          pyshacl -s docs/shapes/edaan-shapes.ttl -d docs/ontology/edaan-owl.ttl -m -f human -o reports/shacl-ontology.txt || true
           echo "📄 SHACL (ontology):"
           cat reports/shacl-ontology.txt || true
 
       - name: Validate all examples (info-only)
         run: |
           mkdir -p reports
-          for ex in examples/*.ttl examples/*/*.ttl; do
+          for ex in docs/examples/*.ttl docs/examples/**/*.ttl; do
             if [ -f "$ex" ]; then
               echo "Validating example: $ex"
               java -jar robot.jar verify --input "$ex" --output-dir reports/ || echo "⚠️ Issues in $ex"
@@ -158,18 +158,18 @@ jobs:
 
       - name: Verify ontology file exists
         run: |
-          if [ ! -f "ontology/edaan-owl.ttl" ]; then
-            echo "❌ Error: ontology file not found at ontology/edaan-owl.ttl"
+          if [ ! -f "docs/ontology/edaan-owl.ttl" ]; then
+            echo "❌ Error: ontology file not found at docs/ontology/edaan-owl.ttl"
             exit 1
           fi
-          echo "✅ Ontology file found: ontology/edaan-owl.ttl"
+          echo "✅ Ontology file found: docs/ontology/edaan-owl.ttl"
 
       - name: Build docs with Widoco (to /docs/ontology)
         run: |
           set -e
           WIDOCO_JAR=.cache/widoco/widoco.jar
           OUT_DIR="docs/ontology"
-          ONT_PATH="ontology/edaan-owl.ttl"
+          ONT_PATH="docs/ontology/edaan-owl.ttl"
           
           test -s "$WIDOCO_JAR" || { echo "Widoco jar not found at $WIDOCO_JAR"; exit 1; }
           test -f "$ONT_PATH" || { echo "Ontology file not found at $ONT_PATH"; exit 1; }
