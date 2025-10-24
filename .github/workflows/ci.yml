@@ -147,18 +147,15 @@ jobs:
           echo "Building documentation for: $ONT_PATH"
           echo "Output directory: $OUT_DIR"
 
-          # Limpieza selectiva: solo eliminar lo que genera Widoco, no la ontología original
-          rm -rf "$OUT_DIR/doc" \
-                 "$OUT_DIR/WebVowl" \
-                 "$OUT_DIR/sections" \
-                 "$OUT_DIR/Ontology"* \
-                 "$OUT_DIR/index.html" \
-                 "$OUT_DIR/index-en.html" \
-                 "$OUT_DIR/.htaccess" \
-                 "$OUT_DIR/edaan-owl.owl" \
-                 "$OUT_DIR/edaan-owl.nt"
+          # Limpiar COMPLETAMENTE el directorio de salida (excepto la ontología original)
+          mkdir -p "$OUT_DIR"_backup
+          cp "$ONT_PATH" "$OUT_DIR"_backup/
+          rm -rf "$OUT_DIR"
+          mkdir -p "$OUT_DIR"
+          mv "$OUT_DIR"_backup/edaan-owl.ttl "$OUT_DIR/"
+          rm -rf "$OUT_DIR"_backup
 
-          # Genera doc desde la ontología en /docs/ontology
+          # Genera doc directamente en el directorio final
           java -jar widoco.jar \
             -ontFile "$ONT_PATH" \
             -outFolder "$OUT_DIR" \
@@ -168,23 +165,21 @@ jobs:
             -htaccess \
             -lang en
 
-          # Mover documentación de doc/ al directorio principal
+          # Mover contenido de doc/ al directorio principal
           if [ -d "$OUT_DIR/doc" ]; then
             echo "Moving documentation from doc/ to root..."
             mv "$OUT_DIR"/doc/* "$OUT_DIR"/
             rmdir "$OUT_DIR/doc"
-            
-            # Actualizar rutas en .htaccess
-            if [ -f "$OUT_DIR/.htaccess" ]; then
-              sed -i 's|/doc/|/|g' "$OUT_DIR/.htaccess"
-              sed -i 's|doc/||g' "$OUT_DIR/.htaccess"
-            fi
-            
-            # Actualizar rutas en archivos HTML
-            find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|href="doc/|href="|g' {} \;
-            find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|src="doc/|src="|g' {} \;
-            find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|url(/doc/|url(/|g' {} \;
           fi
+          
+          # Actualizar rutas
+          if [ -f "$OUT_DIR/.htaccess" ]; then
+            sed -i 's|/doc/|/|g' "$OUT_DIR/.htaccess"
+            sed -i 's|doc/||g' "$OUT_DIR/.htaccess"
+          fi
+          
+          find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|href="doc/|href="|g' {} \;
+          find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|src="doc/|src="|g' {} \;
 
           # Alias a index.html
           if [ -f "$OUT_DIR/index-en.html" ]; then
