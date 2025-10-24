@@ -3,10 +3,6 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 <https://w3id.org/EDAAnOWL/0.0.1> a prov:Entity;
 	 dc:title "EDAAnOWL Ontology (Khaos UMA) — aligned with IDS Information Model";
-<<<<<<< HEAD:docs/ontology/provenance/provenance-en.ttl
-	 prov:wasAttributedTo :agent0;
-=======
->>>>>>> 71589e779d2bddb5f3753cae6cfe2f942875affe:documentation/doc/provenance/provenance-en.ttl
 	 prov:wasAttributedTo <https://github.com/dgarijo/Widoco/>,<http://www.essepuntato.it/lode/>;
 	 prov:wasGeneratedAt "2025-10-20";
 .

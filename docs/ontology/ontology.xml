@@ -18,7 +18,7 @@
         <terms:creator>
             <rdf:Description rdf:nodeID="_:genid1">
                 <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
-                <foaf:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martín Jerónimo Salvachúa Galimberti</foaf:name>
+                <foaf:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martín Jerónimo Salvachúa</foaf:name>
             </rdf:Description>
         </terms:creator>
         <terms:description xml:lang="en">Extends IDS to describe Data Apps, Data Profiles, Metrics, Offers/Policies and their fit with BIGOWL (Algorithms, Problems, Workflows).</terms:description>
@@ -726,7 +726,6 @@
 
 
     <owl:NamedIndividual rdf:about="https://w3id.org/BIGOWLProblems/Prediction"/>
-<<<<<<<< HEAD:docs/ontology/ontology.owl
     
 
 
@@ -1026,12 +1025,10 @@
         <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/ObservedPropertyScheme"/>
         <skos:prefLabel xml:lang="en">Crop Yield</skos:prefLabel>
     </owl:NamedIndividual>
-========
     <rdf:Description rdf:nodeID="_:genid2">
         <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
-        <foaf:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martín Jerónimo Salvachúa Galimberti</foaf:name>
+        <foaf:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martín Jerónimo Salvachúa</foaf:name>
     </rdf:Description>
->>>>>>>> 71589e779d2bddb5f3753cae6cfe2f942875affe:docs/ontology/ontology.xml
     <rdf:Description>
         <ns:hasEmail rdf:resource="mailto:data-owner@example.org"/>
     </rdf:Description>

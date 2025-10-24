@@ -7,15 +7,7 @@
 @base <https://w3id.org/EDAAnOWL/> .
 
 <https://w3id.org/EDAAnOWL/> rdf:type owl:Ontology ;
-<<<<<<< HEAD:docs/ontology/ontology.ttl
-                              owl:versionIRI <https://w3id.org/EDAAnOWL/0.0.1> ;
-=======
                               owl:versionIRI : ;
-                              owl:imports <https://w3id.org/EDAAnOWL/vocab/agro-vocabulary> ,
-                                          <https://w3id.org/EDAAnOWL/vocab/datatypes> ,
-                                          <https://w3id.org/EDAAnOWL/vocab/observed-properties> ,
-                                          <https://w3id.org/EDAAnOWL/vocab/sectors> ;
->>>>>>> 71589e779d2bddb5f3753cae6cfe2f942875affe:documentation/doc/ontology.ttl
                               <http://purl.org/dc/terms/created> "2025-10-10"^^xsd:date ;
                               <http://purl.org/dc/terms/creator> _:genid1 ;
                               <http://purl.org/dc/terms/description> "Extends IDS to describe Data Apps, Data Profiles, Metrics, Offers/Policies and their fit with BIGOWL (Algorithms, Problems, Workflows)."@en ;
@@ -29,7 +21,7 @@
                               owl:versionInfo "0.0.1"^^xsd:string .
 
 _:genid1 rdf:type <http://xmlns.com/foaf/0.1/Person> ;
-          <http://xmlns.com/foaf/0.1/name> "Martín Jerónimo Salvachúa Galimberti"^^xsd:string .
+          <http://xmlns.com/foaf/0.1/name> "Martín Jerónimo Salvachúa"^^xsd:string .
 
 #################################################################
 #    Annotation properties
@@ -432,7 +424,6 @@ xsd:duration rdf:type rdfs:Datatype .
 <https://w3id.org/BIGOWLProblems/Prediction> rdf:type owl:NamedIndividual .
 
 
-<<<<<<< HEAD:docs/ontology/ontology.ttl
 ###  https://w3id.org/EDAAnOWL/AgroVocab
 :AgroVocab rdf:type owl:NamedIndividual ,
                     <http://www.w3.org/2004/02/skos/core#ConceptScheme> ;
@@ -632,12 +623,8 @@ xsd:duration rdf:type rdfs:Datatype .
        <http://www.w3.org/2004/02/skos/core#prefLabel> "Crop Yield"@en .
 
 
-[ <http://www.w3.org/2006/vcard/ns#hasEmail> <mailto:data-owner@example.org>
-] .
-=======
 _:genid2 rdf:type <http://xmlns.com/foaf/0.1/Person> ;
-         <http://xmlns.com/foaf/0.1/name> "Martín Jerónimo Salvachúa Galimberti"^^xsd:string .
->>>>>>> 71589e779d2bddb5f3753cae6cfe2f942875affe:documentation/doc/ontology.ttl
+         <http://xmlns.com/foaf/0.1/name> "Martín Jerónimo Salvachúa"^^xsd:string .
 
 [ <http://www.w3.org/2006/vcard/ns#hasEmail> <mailto:data-owner@example.org>
  ] .

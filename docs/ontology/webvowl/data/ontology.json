@@ -1,5 +1,5 @@
 {
-  "_comment" : "Created with OWL2VOWL (version 0.3.5), http://vowl.visualdataweb.org",
+  "_comment" : "Created with OWL2VOWL (version 0.3.2-SNAPSHOT), http://vowl.visualdataweb.org",
   "header" : {
     "languages" : [ "en", "undefined" ],
     "baseIris" : [ "https://w3id.org/BIGOWLData", "http://www.w3.org/1999/02/22-rdf-syntax-ns", "https://w3id.org/BIGOWLWorkflows", "http://www.w3.org/2001/XMLSchema", "http://www.w3.org/ns/dcat", "http://www.opmw.org/ontology", "https://w3id.org/EDAAnOWL", "https://w3id.org/idsa/core", "http://www.w3.org/ns/odrl/2", "http://www.w3.org/2000/01/rdf-schema", "http://purl.org/dc/terms", "http://xmlns.com/foaf/0.1", "http://www.w3.org/2004/02/skos/core" ],
@@ -8,7 +8,7 @@
     },
     "iri" : "https://w3id.org/EDAAnOWL/",
     "version" : "0.0.1",
-    "author" : [ "_:genid2147483648" ],
+    "author" : [ "_:genid1" ],
     "description" : {
       "en" : "Extends IDS to describe Data Apps, Data Profiles, Metrics, Offers/Policies and their fit with BIGOWL (Algorithms, Problems, Workflows)."
     },
@@ -22,7 +22,7 @@
       "creator" : [ {
         "identifier" : "creator",
         "language" : "undefined",
-        "value" : "_:genid2147483648",
+        "value" : "_:genid1",
         "type" : "label"
       } ],
       "created" : [ {
@@ -43,16 +43,16 @@
         "value" : "2025-10-20",
         "type" : "label"
       } ],
-      "versionInfo" : [ {
-        "identifier" : "versionInfo",
-        "language" : "undefined",
-        "value" : "0.0.1",
-        "type" : "label"
-      } ],
       "preferredNamespaceUri" : [ {
         "identifier" : "preferredNamespaceUri",
         "language" : "undefined",
         "value" : "https://w3id.org/EDAAnOWL/",
+        "type" : "label"
+      } ],
+      "versionInfo" : [ {
+        "identifier" : "versionInfo",
+        "language" : "undefined",
+        "value" : "0.0.1",
         "type" : "label"
       } ],
       "title" : [ {
@@ -64,17 +64,23 @@
       "seeAlso" : [ {
         "identifier" : "seeAlso",
         "language" : "undefined",
-        "value" : "https://w3id.org/BIGOWL/",
+        "value" : "https://w3id.org/idsa/core",
         "type" : "iri"
       }, {
         "identifier" : "seeAlso",
         "language" : "undefined",
-        "value" : "https://w3id.org/idsa/core",
+        "value" : "https://w3id.org/BIGOWL/",
         "type" : "iri"
       } ]
     }
   },
   "namespace" : [ ],
+  "metrics" : {
+    "classCount" : 20,
+    "objectPropertyCount" : 18,
+    "datatypePropertyCount" : 9,
+    "individualCount" : 27
+  },
   "class" : [ {
     "id" : "0",
     "type" : "owl:Class"
@@ -100,7 +106,7 @@
     "id" : "43",
     "type" : "owl:Class"
   }, {
-    "id" : "23",
+    "id" : "25",
     "type" : "owl:Class"
   }, {
     "id" : "44",
@@ -115,7 +121,7 @@
     "id" : "50",
     "type" : "rdfs:Datatype"
   }, {
-    "id" : "25",
+    "id" : "24",
     "type" : "rdfs:Datatype"
   }, {
     "id" : "51",
@@ -133,7 +139,7 @@
     "id" : "48",
     "type" : "owl:Class"
   }, {
-    "id" : "37",
+    "id" : "36",
     "type" : "rdfs:Datatype"
   }, {
     "id" : "7",
@@ -254,32 +260,6 @@
         "IRI-based" : "precipitation"
       }
     }, {
-      "iri" : "https://w3id.org/EDAAnOWL/agro_irrigation",
-      "baseIri" : "https://w3id.org/EDAAnOWL",
-      "annotations" : {
-        "inScheme" : [ {
-          "identifier" : "inScheme",
-          "language" : "undefined",
-          "value" : "https://w3id.org/EDAAnOWL/AgroVocab",
-          "type" : "iri"
-        } ],
-        "prefLabel" : [ {
-          "identifier" : "prefLabel",
-          "language" : "en",
-          "value" : "Irrigation",
-          "type" : "label"
-        } ],
-        "definition" : [ {
-          "identifier" : "definition",
-          "language" : "en",
-          "value" : "Artificial application of water to land",
-          "type" : "label"
-        } ]
-      },
-      "labels" : {
-        "IRI-based" : "agro_irrigation"
-      }
-    }, {
       "iri" : "https://w3id.org/EDAAnOWL/agriculture",
       "baseIri" : "https://w3id.org/EDAAnOWL",
       "annotations" : {
@@ -304,6 +284,32 @@
       },
       "labels" : {
         "IRI-based" : "agriculture"
+      }
+    }, {
+      "iri" : "https://w3id.org/EDAAnOWL/agro_irrigation",
+      "baseIri" : "https://w3id.org/EDAAnOWL",
+      "annotations" : {
+        "inScheme" : [ {
+          "identifier" : "inScheme",
+          "language" : "undefined",
+          "value" : "https://w3id.org/EDAAnOWL/AgroVocab",
+          "type" : "iri"
+        } ],
+        "prefLabel" : [ {
+          "identifier" : "prefLabel",
+          "language" : "en",
+          "value" : "Irrigation",
+          "type" : "label"
+        } ],
+        "definition" : [ {
+          "identifier" : "definition",
+          "language" : "en",
+          "value" : "Artificial application of water to land",
+          "type" : "label"
+        } ]
+      },
+      "labels" : {
+        "IRI-based" : "agro_irrigation"
       }
     }, {
       "iri" : "https://w3id.org/EDAAnOWL/timeseries",
@@ -358,32 +364,6 @@
         "IRI-based" : "yield"
       }
     }, {
-      "iri" : "https://w3id.org/EDAAnOWL/tabular",
-      "baseIri" : "https://w3id.org/EDAAnOWL",
-      "annotations" : {
-        "inScheme" : [ {
-          "identifier" : "inScheme",
-          "language" : "undefined",
-          "value" : "https://w3id.org/EDAAnOWL/DataTypeScheme",
-          "type" : "iri"
-        } ],
-        "prefLabel" : [ {
-          "identifier" : "prefLabel",
-          "language" : "en",
-          "value" : "Tabular",
-          "type" : "label"
-        } ],
-        "definition" : [ {
-          "identifier" : "definition",
-          "language" : "en",
-          "value" : "Structured data in rows and columns",
-          "type" : "label"
-        } ]
-      },
-      "labels" : {
-        "IRI-based" : "tabular"
-      }
-    }, {
       "iri" : "https://w3id.org/EDAAnOWL/agro_fertilization",
       "baseIri" : "https://w3id.org/EDAAnOWL",
       "annotations" : {
@@ -434,6 +414,32 @@
       },
       "labels" : {
         "IRI-based" : "tourism"
+      }
+    }, {
+      "iri" : "https://w3id.org/EDAAnOWL/tabular",
+      "baseIri" : "https://w3id.org/EDAAnOWL",
+      "annotations" : {
+        "inScheme" : [ {
+          "identifier" : "inScheme",
+          "language" : "undefined",
+          "value" : "https://w3id.org/EDAAnOWL/DataTypeScheme",
+          "type" : "iri"
+        } ],
+        "prefLabel" : [ {
+          "identifier" : "prefLabel",
+          "language" : "en",
+          "value" : "Tabular",
+          "type" : "label"
+        } ],
+        "definition" : [ {
+          "identifier" : "definition",
+          "language" : "en",
+          "value" : "Structured data in rows and columns",
+          "type" : "label"
+        } ]
+      },
+      "labels" : {
+        "IRI-based" : "tabular"
       }
     }, {
       "iri" : "https://w3id.org/EDAAnOWL/transport",
@@ -656,32 +662,6 @@
         "IRI-based" : "ndvi"
       }
     }, {
-      "iri" : "https://w3id.org/EDAAnOWL/agro_harvest",
-      "baseIri" : "https://w3id.org/EDAAnOWL",
-      "annotations" : {
-        "inScheme" : [ {
-          "identifier" : "inScheme",
-          "language" : "undefined",
-          "value" : "https://w3id.org/EDAAnOWL/AgroVocab",
-          "type" : "iri"
-        } ],
-        "prefLabel" : [ {
-          "identifier" : "prefLabel",
-          "language" : "en",
-          "value" : "Harvest",
-          "type" : "label"
-        } ],
-        "definition" : [ {
-          "identifier" : "definition",
-          "language" : "en",
-          "value" : "Crop harvesting activities and timing",
-          "type" : "label"
-        } ]
-      },
-      "labels" : {
-        "IRI-based" : "agro_harvest"
-      }
-    }, {
       "iri" : "https://w3id.org/EDAAnOWL/agro_olive",
       "baseIri" : "https://w3id.org/EDAAnOWL",
       "annotations" : {
@@ -712,6 +692,32 @@
       },
       "labels" : {
         "IRI-based" : "agro_olive"
+      }
+    }, {
+      "iri" : "https://w3id.org/EDAAnOWL/agro_harvest",
+      "baseIri" : "https://w3id.org/EDAAnOWL",
+      "annotations" : {
+        "inScheme" : [ {
+          "identifier" : "inScheme",
+          "language" : "undefined",
+          "value" : "https://w3id.org/EDAAnOWL/AgroVocab",
+          "type" : "iri"
+        } ],
+        "prefLabel" : [ {
+          "identifier" : "prefLabel",
+          "language" : "en",
+          "value" : "Harvest",
+          "type" : "label"
+        } ],
+        "definition" : [ {
+          "identifier" : "definition",
+          "language" : "en",
+          "value" : "Crop harvesting activities and timing",
+          "type" : "label"
+        } ]
+      },
+      "labels" : {
+        "IRI-based" : "agro_harvest"
       }
     }, {
       "iri" : "https://w3id.org/EDAAnOWL/geovector",
@@ -893,8 +899,8 @@
   }, {
     "instances" : 0,
     "union" : [ "12", "17" ],
-    "attributes" : [ "union", "anonymous" ],
-    "id" : "23"
+    "attributes" : [ "anonymous", "union" ],
+    "id" : "25"
   }, {
     "iri" : "http://xmlns.com/foaf/0.1/Person",
     "baseIri" : "http://xmlns.com/foaf/0.1",
@@ -930,7 +936,7 @@
   }, {
     "iri" : "http://www.w3.org/2001/XMLSchema#string",
     "baseIri" : "http://www.w3.org/2001/XMLSchema",
-    "id" : "25",
+    "id" : "24",
     "label" : {
       "IRI-based" : "string"
     }
@@ -978,7 +984,7 @@
   }, {
     "iri" : "http://www.w3.org/2001/XMLSchema#string",
     "baseIri" : "http://www.w3.org/2001/XMLSchema",
-    "id" : "37",
+    "id" : "36",
     "label" : {
       "IRI-based" : "string"
     }
@@ -1105,11 +1111,11 @@
     "id" : "21",
     "type" : "owl:datatypeProperty"
   }, {
+    "id" : "23",
+    "type" : "owl:datatypeProperty"
+  }, {
     "id" : "8",
     "type" : "owl:objectProperty"
-  }, {
-    "id" : "24",
-    "type" : "owl:datatypeProperty"
   }, {
     "id" : "29",
     "type" : "owl:objectProperty"
@@ -1124,10 +1130,10 @@
     "type" : "owl:datatypeProperty"
   }, {
     "id" : "35",
-    "type" : "owl:objectProperty"
-  }, {
-    "id" : "36",
     "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "37",
+    "type" : "owl:objectProperty"
   }, {
     "id" : "38",
     "type" : "owl:objectProperty"
@@ -1200,7 +1206,7 @@
     },
     "domain" : "7",
     "subproperty" : [ "8" ],
-    "attributes" : [ "external", "object" ],
+    "attributes" : [ "object", "external" ],
     "id" : "6"
   }, {
     "iri" : "https://w3id.org/EDAAnOWL/profileTemporalResolution",
@@ -1255,7 +1261,7 @@
     },
     "domain" : "7",
     "subproperty" : [ "20" ],
-    "attributes" : [ "external", "object" ],
+    "attributes" : [ "object", "external" ],
     "id" : "19"
   }, {
     "iri" : "https://w3id.org/EDAAnOWL/computedAt",
@@ -1269,6 +1275,17 @@
     "attributes" : [ "datatype" ],
     "id" : "21"
   }, {
+    "iri" : "https://w3id.org/EDAAnOWL/profileCRS",
+    "baseIri" : "https://w3id.org/EDAAnOWL",
+    "range" : "24",
+    "label" : {
+      "IRI-based" : "profileCRS",
+      "en" : "profile CRS"
+    },
+    "domain" : "0",
+    "attributes" : [ "datatype" ],
+    "id" : "23"
+  }, {
     "iri" : "https://w3id.org/EDAAnOWL/hasDomainSector",
     "baseIri" : "https://w3id.org/EDAAnOWL",
     "range" : "5",
@@ -1277,30 +1294,9 @@
       "en" : "has domain sector"
     },
     "superproperty" : [ "6" ],
-    "domain" : "23",
+    "domain" : "25",
     "attributes" : [ "object" ],
     "id" : "8"
-  }, {
-    "iri" : "https://w3id.org/EDAAnOWL/profileCRS",
-    "baseIri" : "https://w3id.org/EDAAnOWL",
-    "range" : "25",
-    "label" : {
-      "IRI-based" : "profileCRS",
-      "en" : "profile CRS"
-    },
-    "domain" : "0",
-    "attributes" : [ "datatype" ],
-    "id" : "24"
-  }, {
-    "iri" : "https://w3id.org/EDAAnOWL/requiresProfile",
-    "baseIri" : "https://w3id.org/EDAAnOWL",
-    "range" : "0",
-    "label" : {
-      "IRI-based" : "requiresProfile"
-    },
-    "domain" : "17",
-    "attributes" : [ "object" ],
-    "id" : "29"
   }, {
     "iri" : "https://w3id.org/EDAAnOWL/declaresObservedProperty",
     "baseIri" : "https://w3id.org/EDAAnOWL",
@@ -1311,6 +1307,16 @@
     },
     "domain" : "0",
     "attributes" : [ "object" ],
+    "id" : "29"
+  }, {
+    "iri" : "https://w3id.org/EDAAnOWL/requiresProfile",
+    "baseIri" : "https://w3id.org/EDAAnOWL",
+    "range" : "0",
+    "label" : {
+      "IRI-based" : "requiresProfile"
+    },
+    "domain" : "17",
+    "attributes" : [ "object" ],
     "id" : "30"
   }, {
     "iri" : "http://purl.org/dc/terms/conformsTo",
@@ -1320,7 +1326,7 @@
       "IRI-based" : "conformsTo"
     },
     "domain" : "7",
-    "attributes" : [ "external", "object" ],
+    "attributes" : [ "object", "external" ],
     "id" : "32"
   }, {
     "iri" : "https://w3id.org/EDAAnOWL/metricUnit",
@@ -1334,19 +1340,9 @@
     "attributes" : [ "datatype" ],
     "id" : "33"
   }, {
-    "iri" : "https://w3id.org/EDAAnOWL/producesProfile",
-    "baseIri" : "https://w3id.org/EDAAnOWL",
-    "range" : "0",
-    "label" : {
-      "IRI-based" : "producesProfile"
-    },
-    "domain" : "17",
-    "attributes" : [ "object" ],
-    "id" : "35"
-  }, {
     "iri" : "https://w3id.org/EDAAnOWL/supportContact",
     "baseIri" : "https://w3id.org/EDAAnOWL",
-    "range" : "37",
+    "range" : "36",
     "label" : {
       "IRI-based" : "supportContact",
       "en" : "support contact"
@@ -1356,7 +1352,17 @@
       "en" : "Support email/URL for a resource or service."
     },
     "attributes" : [ "datatype" ],
-    "id" : "36"
+    "id" : "35"
+  }, {
+    "iri" : "https://w3id.org/EDAAnOWL/producesProfile",
+    "baseIri" : "https://w3id.org/EDAAnOWL",
+    "range" : "0",
+    "label" : {
+      "IRI-based" : "producesProfile"
+    },
+    "domain" : "17",
+    "attributes" : [ "object" ],
+    "id" : "37"
   }, {
     "iri" : "https://w3id.org/EDAAnOWL/compatibleWith",
     "baseIri" : "https://w3id.org/EDAAnOWL",
