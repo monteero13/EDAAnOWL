@@ -1,23 +1,68 @@
 <!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EDAAnOWL</title>
 <style>
-body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:2rem;line-height:1.6}
-.card{border:1px solid #e5e7eb;border-radius:12px;padding:1rem 1.2rem;margin:.8rem 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-code,pre{background:#f6f8fa;padding:.2rem .4rem;border-radius:4px}
-a{color:#0b5fff;text-decoration:none}a:hover{text-decoration:underline}
+  :root{--fg:#0b1220;--muted:#5b6876;--card:#f8fafc;--line:#e5e7eb;--link:#0b5fff}
+  body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:2rem;line-height:1.6;color:var(--fg)}
+  h1{margin:0 0 .25rem}
+  .sub{color:var(--muted)}
+  .grid{display:grid;gap:.8rem;margin:1rem 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem 1.2rem}
+  code,pre{background:#f6f8fa;padding:.2rem .4rem;border-radius:4px}
+  a{color:var(--link);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .small{font-size:.925rem}
 </style>
-</head><body>
-<h1>EDAAnOWL <small style="color:#666;font-weight:400">v0.0.1</small></h1>
-<p>Ontology for Data Ecosystems and Analytical Applications — aligned with <strong>IDSA</strong> &amp; connected to <strong>BIGOWL</strong>.</p>
-<div class="card"><strong>Ontology:</strong> <code>ontology/edan-owl.ttl</code></div>
-<div class="card"><strong>Agro Vocabulary (SKOS):</strong> <code>ontology/vocab/agro-vocabulary.ttl</code></div>
-<div class="card"><strong>SHACL Shapes:</strong> <code>shapes/edaan-shapes.ttl</code></div>
-<div class="card"><strong>Examples:</strong> <code>examples/minimal-example.ttl</code></div>
-<div class="card"><strong>CI Workflow:</strong> <code>.github/workflows/ci.yml</code></div>
-<p>Validate locally:</p>
-<pre><code>python -m venv venv
+</head>
+<body>
+  <h1>EDAAnOWL <small class="sub">v0.0.1</small></h1>
+  <p>Ontology for Data Ecosystems and Analytical Applications — aligned with <strong>IDSA</strong> &amp; connected to <strong>BIGOWL</strong>.</p>
+
+  <div class="grid">
+    <div class="card">
+      <strong>Ontology (Turtle):</strong>
+      <div><a href="ontology/edaan-owl.ttl"><code>ontology/edaan-owl.ttl</code></a></div>
+      <div class="small sub">Permanent link via w3id should redirect here.</div>
+    </div>
+
+    <div class="card">
+      <strong>Ontology documentation (Widoco):</strong>
+      <div><a href="ontology/index-en.html">HTML documentation</a> · <a href="ontology/WebVowl/index.html">WebVOWL graph</a></div>
+      <div class="small sub">Generated in CI into <code>/docs/ontology</code>.</div>
+    </div>
+
+    <div class="card">
+      <strong>SHACL Shapes:</strong>
+      <div><a href="shapes/edaan-shapes.ttl"><code>shapes/edaan-shapes.ttl</code></a></div>
+    </div>
+
+    <div class="card">
+      <strong>Examples:</strong>
+      <div><a href="examples/minimal-example.ttl"><code>examples/minimal-example.ttl</code></a></div>
+    </div>
+
+    <div class="card">
+      <strong>CI Workflow:</strong>
+      <div>
+        <a href="https://github.com/KhaosResearch/EDAAnOWL/blob/main/.github/workflows/ci.yml">.github/workflows/ci.yml</a>
+      </div>
+      <div class="small sub">Validates ontology & shapes; rebuilds docs only when the ontology file changes.</div>
+    </div>
+  </div>
+<div class="card">
+  <strong>Validate locally:</strong>
+    <div>
+        <pre>
+            <code>
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install rdflib pyshacl
-pyshacl -s shapes/edaan-shapes.ttl -d examples/minimal-example.ttl -m -f human</code></pre>
-</body></html>
+pyshacl -s shapes/edaan-shapes.ttl -d examples/minimal-example.ttl -m -f human
+            </code>
+        </pre>
+    </div>
+</body>
+</html>

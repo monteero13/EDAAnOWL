@@ -5,7 +5,6 @@ on:
   pull_request:
   workflow_dispatch:
 
-# Necesario para poder hacer commit de /documentation
 permissions:
   contents: write
 
@@ -13,11 +12,34 @@ concurrency:
   group: edaanowl-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  ONT_PATH: docs/ontology/edaan-owl.ttl
+  SHAPES_PATH: docs/shapes/edaan-shapes.ttl
+
 jobs:
+  # 1) Detecta si cambió la ontología
+  changes:
+    name: "🧭 Detect ontology changes"
+    runs-on: ubuntu-latest
+    outputs:
+      ontology_changed: ${{ steps.filter.outputs.ontology }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # necesario para diff correcto
+      - name: Paths filter
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            ontology:
+              - ${{ env.ONT_PATH }}
+
+  # 2) Validación (se ejecuta siempre)
   validate:
     name: "🔍 Validate ontology & examples"
     runs-on: ubuntu-latest
-
+    needs: changes
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,11 +62,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install rdflib pyshacl requests
 
-      - name: Setup Java
+      - name: Setup Java (ROBOT)
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'   # Widoco/ROBOT funcionan bien con 11 o 17; usamos 17 estable
+          java-version: '17'
 
       - name: Download ROBOT
         run: |
@@ -52,23 +74,20 @@ jobs:
           java -jar robot.jar --version
 
       - name: RDF syntax check (rdflib via script)
-        run: python scripts/check_rdf.py
+        run: python docs/scripts/check_rdf.py
 
       - name: OWL profile & basic consistency (ROBOT)
         run: |
           mkdir -p reports
-          # validate: perfil OWL, PURLs, IRIs, etc.
-          java -jar robot.jar validate --input ontology/edaan-owl.ttl --output reports/robot-validate.tsv || true
+          java -jar robot.jar validate --input "$ONT_PATH" --output reports/robot-validate.tsv || true
           echo "ROBOT validate report:"
           cat reports/robot-validate.tsv || true
-
-          # reason + report (clasificación con ELK; solo informativo)
-          java -jar robot.jar reason --input ontology/edaan-owl.ttl --reasoner ELK --output reports/edaan-owl-classified.ttl || true
+          java -jar robot.jar reason --input "$ONT_PATH" --reasoner ELK --output reports/edaan-owl-classified.ttl || true
 
       - name: SHACL (minimal example MUST pass)
         run: |
           mkdir -p reports
-          pyshacl -s shapes/edaan-shapes.ttl -d examples/minimal-example.ttl -m -f human -o reports/shacl-minimal.txt
+          pyshacl -s "$SHAPES_PATH" -d docs/examples/minimal-example.ttl -m -f human -o reports/shacl-minimal.txt
           echo "📄 SHACL (minimal):"
           cat reports/shacl-minimal.txt
           if grep -qi "violation" reports/shacl-minimal.txt; then
@@ -78,14 +97,14 @@ jobs:
 
       - name: SHACL (ontology info-only)
         run: |
-          pyshacl -s shapes/edaan-shapes.ttl -d ontology/edaan-owl.ttl -m -f human -o reports/shacl-ontology.txt || true
+          pyshacl -s "$SHAPES_PATH" -d "$ONT_PATH" -m -f human -o reports/shacl-ontology.txt || true
           echo "📄 SHACL (ontology):"
           cat reports/shacl-ontology.txt || true
 
       - name: Validate all examples (info-only)
         run: |
           mkdir -p reports
-          for ex in examples/*.ttl examples/*/*.ttl; do
+          for ex in docs/examples/*.ttl docs/examples/*/*.ttl; do
             if [ -f "$ex" ]; then
               echo "Validating example: $ex"
               java -jar robot.jar verify --input "$ex" --output-dir reports/ || echo "⚠️ Issues in $ex"
@@ -100,61 +119,75 @@ jobs:
           path: reports/
           retention-days: 30
 
+  # 3) Docs (solo cuando cambia la ontología o ejecución manual)
   docs:
-    name: "📚 Build Widoco docs -> /documentation"
-    needs: validate
+    name: "📚 Build Widoco docs -> /docs/ontology"
     runs-on: ubuntu-latest
-
-    # Solo generamos docs en pushes a la rama principal (evita PRs escribiendo en /documentation)
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: [changes, validate]
+    if: |
+      (github.event_name == 'workflow_dispatch') ||
+      (github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && needs.changes.outputs.ontology_changed == 'true')
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Setup Java 11 (Widoco)
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '11'
 
+      - name: Cache Widoco jar
+        uses: actions/cache@v4
+        with:
+          path: widoco.jar
+          key: widoco-1.4.5
       - name: Download Widoco
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           WIDOCO_VERSION=1.4.5
-          wget -q https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar -O widoco.jar
+          wget -q "https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar" -O widoco.jar
           java -jar widoco.jar -version
 
-      - name: Build docs with Widoco
+      - name: Build docs with Widoco (to /docs/ontology)
+        env:
+          OUT_DIR: docs/ontology
         run: |
-          # Limpia la salida previa pero conserva .gitkeep (si lo usas)
-          mkdir -p documentation
-          find documentation -mindepth 1 -not -name '.gitkeep' -exec rm -rf {} +
+          mkdir -p "$OUT_DIR"
+          # Limpieza selectiva: elimina SOLO lo que genera Widoco
+          rm -rf "$OUT_DIR/doc" \
+                 "$OUT_DIR/WebVowl" \
+                 "$OUT_DIR/sections" \
+                 "$OUT_DIR/Ontology*" \
+                 "$OUT_DIR/index.html" \
+                 "$OUT_DIR/index-en.html" \
+                 "$OUT_DIR/.htaccess"
 
-          # Genera la documentación desde ontology/edaan-owl.ttl
           java -jar widoco.jar \
-            -ontFile ontology/edaan-owl.ttl \
-            -outFolder documentation \
+            -ontFile "$ONT_PATH" \
+            -outFolder "$OUT_DIR" \
             -getOntologyMetadata \
             -rewriteAll \
             -webVowl \
-            -htaccess true \
+            -htaccess \
             -lang en
 
-          # Alias cómodo a index.html
-          if [ -f documentation/index-en.html ]; then
-            cp documentation/index-en.html documentation/index.html
+          if [ -f "$OUT_DIR/index-en.html" ]; then
+            cp "$OUT_DIR/index-en.html" "$OUT_DIR/index.html"
           fi
 
       - name: Upload built docs artifact
         uses: actions/upload-artifact@v4
         with:
           name: widoco-documentation
-          path: documentation/
+          path: docs/ontology/doc/
           retention-days: 14
 
-      - name: Commit documentation to repo
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore(docs): regenerate Widoco documentation"
-          file_pattern: documentation/*
-          add_options: '-A'
+      - name: Commit and push documentation
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/ontology/
+          git diff --cached --quiet || git commit -m "chore(docs): regenerate Widoco documentation (ontology changed)"
+          git push

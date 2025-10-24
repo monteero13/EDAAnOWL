@@ -33,10 +33,6 @@
                               vann:preferredNamespaceUri "https://w3id.org/EDAAnOWL/" ;
                               rdfs:seeAlso <https://w3id.org/BIGOWL/> ,
                                            <https://w3id.org/idsa/core> ;
-							  owl:imports <https://w3id.org/EDAAnOWL/vocab/sectors>,
-										  <https://w3id.org/EDAAnOWL/vocab/datatypes>,
-										  <https://w3id.org/EDAAnOWL/vocab/observed-properties>,
-										  <https://w3id.org/EDAAnOWL/vocab/agro-vocabulary> ;
                               owl:versionInfo "0.0.1" .
 
 #################################################################
@@ -73,6 +69,14 @@ vann:preferredNamespacePrefix rdf:type owl:AnnotationProperty .
 
 ###  http://purl.org/vocab/vann/preferredNamespaceUri
 vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#broader
+skos:broader rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#definition
+skos:definition rdf:type owl:AnnotationProperty .
 
 
 ###  http://www.w3.org/2004/02/skos/core#inScheme
@@ -115,14 +119,6 @@ odrl:rightOperand rdf:type owl:AnnotationProperty .
 foaf:name rdf:type owl:AnnotationProperty .
 
 
-###  https://w3id.org/EDAAnOWL/supportContact
-:supportContact rdf:type owl:DatatypeProperty ;
-                rdfs:domain ids:Resource ;
-                rdfs:range xsd:string ;
-                rdfs:comment "Support email/URL for a resource or service."@en ;
-                rdfs:label "support contact"@en .
-
-
 #################################################################
 #    Datatypes
 #################################################################
@@ -139,6 +135,10 @@ xsd:duration rdf:type rdfs:Datatype .
 #    Object Properties
 #################################################################
 
+###  http://purl.org/dc/terms/conformsTo
+dct:conformsTo rdf:type owl:ObjectProperty .
+
+
 ###  http://purl.org/dc/terms/subject
 dct:subject rdf:type owl:ObjectProperty .
 
@@ -150,8 +150,8 @@ ns1:theme rdf:type owl:ObjectProperty .
 ###  https://w3id.org/EDAAnOWL/compatibleWith
 :compatibleWith rdf:type owl:ObjectProperty ,
                          owl:SymmetricProperty ;
-                rdfs:domain rdfs:Resource ;
-                rdfs:range rdfs:Resource ;
+                rdfs:domain odrl:Asset ;
+                rdfs:range odrl:Asset ;
                 rdfs:comment "Curated compatibility between resources (dataset↔app, app↔app, profile↔profile)."@en ;
                 rdfs:label "compatible with"@en .
 
@@ -167,13 +167,6 @@ ns1:theme rdf:type owl:ObjectProperty .
                   rdfs:domain bigwf:Component ;
                   rdfs:range ids:Representation ;
                   rdfs:label "consumes representation"@en .
-
-
-###  https://w3id.org/EDAAnOWL/declaresAlgorithm
-:declaresAlgorithm rdf:type owl:ObjectProperty ;
-                   rdfs:domain ids:DataApp ;
-                   rdfs:range bigalg:Algorithm ;
-                   rdfs:label "declares algorithm"@en .
 
 
 ###  https://w3id.org/EDAAnOWL/declaresDataClass
@@ -193,17 +186,18 @@ ns1:theme rdf:type owl:ObjectProperty .
 ###  https://w3id.org/EDAAnOWL/hasDomainSector
 :hasDomainSector rdf:type owl:ObjectProperty ;
                  rdfs:subPropertyOf ns1:theme ;
-                 rdfs:domain ids:Resource ;
+                 rdfs:domain ids:DataApp ,
+                             ids:Resource ;
                  rdfs:range skos:Concept ;
                  rdfs:label "has domain sector"@en .
 
 
-###  https://w3id.org/EDAAnOWL/hasOffer
-:hasOffer rdf:type owl:ObjectProperty ;
-          rdfs:domain ids:Resource ;
-          rdfs:range ids:ContractOffer ;
-          rdfs:comment "Associates a resource with an IDS ContractOffer (usage policy, pricing, etc.)."@en ;
-          rdfs:label "has offer"@en .
+###  https://w3id.org/EDAAnOWL/implementsComponent
+:implementsComponent rdf:type owl:ObjectProperty ;
+                     rdfs:domain ids:DataApp ;
+                     rdfs:range bigwf:Component ;
+                     rdfs:comment "Links an IDSA DataApp to the BIGOWL workflow Component it implements."@en ;
+                     rdfs:label "implements component"@en .
 
 
 ###  https://w3id.org/EDAAnOWL/parameter
@@ -212,15 +206,9 @@ ns1:theme rdf:type owl:ObjectProperty .
            rdfs:range :Parameter .
 
 
-###  https://w3id.org/EDAAnOWL/pricePlan
-:pricePlan rdf:type owl:ObjectProperty ;
-           rdfs:domain ids:ContractOffer ;
-           rdfs:range :PricePlan .
-
-
 ###  https://w3id.org/EDAAnOWL/producesProfile
 :producesProfile rdf:type owl:ObjectProperty ;
-				 rdfs:domain ids:DataApp ;
+                 rdfs:domain ids:DataApp ;
                  rdfs:range :DataProfile .
 
 
@@ -234,7 +222,7 @@ ns1:theme rdf:type owl:ObjectProperty .
 ###  https://w3id.org/EDAAnOWL/profileCRSRef
 :profileCRSRef rdf:type owl:ObjectProperty ;
                rdfs:domain :DataProfile ;
-               rdfs:range rdfs:Resource ;
+               rdfs:range odrl:Asset ;
                rdfs:label "profile CRS (IRI)"@en .
 
 
@@ -247,15 +235,8 @@ ns1:theme rdf:type owl:ObjectProperty .
 
 ###  https://w3id.org/EDAAnOWL/requiresProfile
 :requiresProfile rdf:type owl:ObjectProperty ;
-				 rdfs:domain ids:DataApp ;
+                 rdfs:domain ids:DataApp ;
                  rdfs:range :DataProfile .
-
-
-###  https://w3id.org/EDAAnOWL/solvesProblem
-:solvesProblem rdf:type owl:ObjectProperty ;
-               rdfs:domain ids:DataApp ;
-               rdfs:range bigprob:Problem ;
-               rdfs:label "solves problem"@en .
 
 
 ###  https://w3id.org/EDAAnOWL/spatialGranularityConcept
@@ -276,22 +257,6 @@ ns1:theme rdf:type owl:ObjectProperty .
 #################################################################
 #    Data properties
 #################################################################
-
-###  http://purl.org/dc/terms/conformsTo
-dct:conformsTo rdf:type owl:DatatypeProperty .
-
-
-###  https://w3id.org/EDAAnOWL/billingPeriodUnit
-:billingPeriodUnit rdf:type owl:DatatypeProperty ;
-                   rdfs:domain :PricePlan ;
-                   rdfs:range xsd:string .
-
-
-###  https://w3id.org/EDAAnOWL/billingPeriodValue
-:billingPeriodValue rdf:type owl:DatatypeProperty ;
-                    rdfs:domain :PricePlan ;
-                    rdfs:range xsd:integer .
-
 
 ###  https://w3id.org/EDAAnOWL/computedAt
 :computedAt rdf:type owl:DatatypeProperty ;
@@ -319,18 +284,6 @@ dct:conformsTo rdf:type owl:DatatypeProperty .
              rdfs:domain :Metric ;
              rdfs:range xsd:decimal ;
              rdfs:label "metric value"@en .
-
-
-###  https://w3id.org/EDAAnOWL/priceAmount
-:priceAmount rdf:type owl:DatatypeProperty ;
-             rdfs:domain :PricePlan ;
-             rdfs:range xsd:decimal .
-
-
-###  https://w3id.org/EDAAnOWL/priceCurrency
-:priceCurrency rdf:type owl:DatatypeProperty ;
-               rdfs:domain :PricePlan ;
-               rdfs:range xsd:string .
 
 
 ###  https://w3id.org/EDAAnOWL/profileCRS
@@ -361,16 +314,20 @@ dct:conformsTo rdf:type owl:DatatypeProperty .
                     rdfs:label "spatial granularity"@en .
 
 
+###  https://w3id.org/EDAAnOWL/supportContact
+:supportContact rdf:type owl:DatatypeProperty ;
+                rdfs:domain ids:Resource ;
+                rdfs:range xsd:string ;
+                rdfs:comment "Support email/URL for a resource or service."@en ;
+                rdfs:label "support contact"@en .
+
+
 #################################################################
 #    Classes
 #################################################################
 
 ###  http://www.opmw.org/ontology/WorkflowTemplate
 opmw:WorkflowTemplate rdf:type owl:Class .
-
-
-###  http://www.w3.org/2000/01/rdf-schema#Resource
-rdfs:Resource rdf:type owl:Class .
 
 
 ###  http://www.w3.org/2004/02/skos/core#Concept
@@ -381,28 +338,16 @@ skos:Concept rdf:type owl:Class .
 skos:ConceptScheme rdf:type owl:Class .
 
 
-###  http://www.w3.org/ns/dcat#Dataset
-ns1:Dataset rdf:type owl:Class .
-
-
-###  http://www.w3.org/ns/dcat#Distribution
-ns1:Distribution rdf:type owl:Class .
+###  http://www.w3.org/ns/odrl/2/Asset
+odrl:Asset rdf:type owl:Class .
 
 
 ###  http://xmlns.com/foaf/0.1/Person
 foaf:Person rdf:type owl:Class .
 
 
-###  https://w3id.org/BIGOWLAlgorithms/Algorithm
-bigalg:Algorithm rdf:type owl:Class .
-
-
 ###  https://w3id.org/BIGOWLData/Data
 bigdat:Data rdf:type owl:Class .
-
-
-###  https://w3id.org/BIGOWLProblems/Problem
-bigprob:Problem rdf:type owl:Class .
 
 
 ###  https://w3id.org/BIGOWLWorkflows/Component
@@ -411,7 +356,9 @@ bigwf:Component rdf:type owl:Class .
 
 ###  https://w3id.org/EDAAnOWL/AnalyzerApp
 :AnalyzerApp rdf:type owl:Class ;
-             rdfs:subClassOf ids:DataApp .
+             rdfs:subClassOf ids:SmartDataApp ;
+             rdfs:comment "A smart data app for descriptive/diagnostic analysis (profiling, summarization, outlier detection)."@en ;
+             rdfs:label "Analyzer App"@en .
 
 
 ###  https://w3id.org/EDAAnOWL/DataProfile
@@ -438,13 +385,9 @@ bigwf:Component rdf:type owl:Class .
 
 ###  https://w3id.org/EDAAnOWL/PredictionApp
 :PredictionApp rdf:type owl:Class ;
-               rdfs:subClassOf ids:SmartDataApp .
-
-
-###  https://w3id.org/EDAAnOWL/PricePlan
-:PricePlan rdf:type owl:Class ;
-           rdfs:subClassOf :Metric ;
-           rdfs:label "Price Plan"@en .
+               rdfs:subClassOf ids:SmartDataApp ;
+               rdfs:comment "A smart data app that produces predictions/inferences from input data using a model or algorithm."@en ;
+               rdfs:label "Prediction App"@en .
 
 
 ###  https://w3id.org/EDAAnOWL/QualityMetric
@@ -455,11 +398,9 @@ bigwf:Component rdf:type owl:Class .
 
 ###  https://w3id.org/EDAAnOWL/VisualizationApp
 :VisualizationApp rdf:type owl:Class ;
-                  rdfs:subClassOf ids:SmartDataApp .
-
-
-###  https://w3id.org/idsa/core/ContractOffer
-ids:ContractOffer rdf:type owl:Class .
+                  rdfs:subClassOf ids:SmartDataApp ;
+                  rdfs:comment "A smart data app that renders data into visual views/reports without altering underlying data."@en ;
+                  rdfs:label "Visualization App"@en .
 
 
 ###  https://w3id.org/idsa/core/DataApp
@@ -483,6 +424,10 @@ ids:SmartDataApp rdf:type owl:Class ;
                  rdfs:subClassOf ids:DataApp .
 
 
+#################################################################
+#    Individuals
+#################################################################
+
 ###  https://w3id.org/BIGOWLAlgorithms/RFPredict
 bigalg:RFPredict rdf:type owl:NamedIndividual .
 
@@ -491,5 +436,206 @@ bigalg:RFPredict rdf:type owl:NamedIndividual .
 bigprob:Prediction rdf:type owl:NamedIndividual .
 
 
+###  https://w3id.org/EDAAnOWL/AgroVocab
+:AgroVocab rdf:type owl:NamedIndividual ,
+                    skos:ConceptScheme ;
+           dct:description "Specialized vocabulary for agricultural data and applications."@en ;
+           dct:title "Agricultural Domain Vocabulary"@en .
+
+
+###  https://w3id.org/EDAAnOWL/DataTypeScheme
+:DataTypeScheme rdf:type owl:NamedIndividual ,
+                         skos:ConceptScheme ;
+                dct:description "Categories for classifying data types and formats."@en ;
+                dct:title "Data Type Categories"@en .
+
+
+###  https://w3id.org/EDAAnOWL/ObservedPropertyScheme
+:ObservedPropertyScheme rdf:type owl:NamedIndividual ,
+                                 skos:ConceptScheme ;
+                        dct:description "Properties that can be observed or measured in datasets."@en ;
+                        dct:title "Observed Properties"@en .
+
+
+###  https://w3id.org/EDAAnOWL/SectorScheme
+:SectorScheme rdf:type owl:NamedIndividual ,
+                       skos:ConceptScheme ;
+              dct:description "Sectors for tagging data assets and applications by economic or thematic domain."@en ;
+              dct:title "Economic and Domain Sectors"@en .
+
+
+###  https://w3id.org/EDAAnOWL/agriculture
+:agriculture rdf:type owl:NamedIndividual ,
+                      skos:Concept ;
+             skos:definition "Crop production, livestock, and agricultural activities"@en ;
+             skos:inScheme :SectorScheme ;
+             skos:prefLabel "Agriculture"@en .
+
+
+###  https://w3id.org/EDAAnOWL/agro_fertilization
+:agro_fertilization rdf:type owl:NamedIndividual ,
+                             skos:Concept ;
+                    skos:definition "Application of fertilizers to soil"@en ;
+                    skos:inScheme :AgroVocab ;
+                    skos:prefLabel "Fertilization"@en .
+
+
+###  https://w3id.org/EDAAnOWL/agro_harvest
+:agro_harvest rdf:type owl:NamedIndividual ,
+                       skos:Concept ;
+              skos:definition "Crop harvesting activities and timing"@en ;
+              skos:inScheme :AgroVocab ;
+              skos:prefLabel "Harvest"@en .
+
+
+###  https://w3id.org/EDAAnOWL/agro_irrigation
+:agro_irrigation rdf:type owl:NamedIndividual ,
+                          skos:Concept ;
+                 skos:definition "Artificial application of water to land"@en ;
+                 skos:inScheme :AgroVocab ;
+                 skos:prefLabel "Irrigation"@en .
+
+
+###  https://w3id.org/EDAAnOWL/agro_maize
+:agro_maize rdf:type owl:NamedIndividual ,
+                     skos:Concept ;
+            skos:broader :agriculture ;
+            skos:definition "Corn, Zea mays"@en ;
+            skos:inScheme :AgroVocab ;
+            skos:prefLabel "Maize"@en .
+
+
+###  https://w3id.org/EDAAnOWL/agro_olive
+:agro_olive rdf:type owl:NamedIndividual ,
+                     skos:Concept ;
+            skos:broader :agriculture ;
+            skos:definition "Olive tree cultivation and oil production"@en ;
+            skos:inScheme :AgroVocab ;
+            skos:prefLabel "Olive"@en .
+
+
+###  https://w3id.org/EDAAnOWL/agro_wheat
+:agro_wheat rdf:type owl:NamedIndividual ,
+                     skos:Concept ;
+            skos:broader :agriculture ;
+            skos:definition "Cereal grain, genus Triticum"@en ;
+            skos:inScheme :AgroVocab ;
+            skos:prefLabel "Wheat"@en .
+
+
+###  https://w3id.org/EDAAnOWL/energy
+:energy rdf:type owl:NamedIndividual ,
+                 skos:Concept ;
+        skos:definition "Energy production, distribution, and consumption"@en ;
+        skos:inScheme :SectorScheme ;
+        skos:prefLabel "Energy"@en .
+
+
+###  https://w3id.org/EDAAnOWL/georaster
+:georaster rdf:type owl:NamedIndividual ,
+                    skos:Concept ;
+           skos:definition "Grid-based geospatial data (satellite imagery, DEM)"@en ;
+           skos:inScheme :DataTypeScheme ;
+           skos:prefLabel "Geospatial Raster"@en .
+
+
+###  https://w3id.org/EDAAnOWL/geovector
+:geovector rdf:type owl:NamedIndividual ,
+                    skos:Concept ;
+           skos:definition "Vector-based geospatial data (points, lines, polygons)"@en ;
+           skos:inScheme :DataTypeScheme ;
+           skos:prefLabel "Geospatial Vector"@en .
+
+
+###  https://w3id.org/EDAAnOWL/health
+:health rdf:type owl:NamedIndividual ,
+                 skos:Concept ;
+        skos:definition "Healthcare, medical services, and public health"@en ;
+        skos:inScheme :SectorScheme ;
+        skos:prefLabel "Health"@en .
+
+
+###  https://w3id.org/EDAAnOWL/ndvi
+:ndvi rdf:type owl:NamedIndividual ,
+               skos:Concept ;
+      skos:definition "Normalized Difference Vegetation Index"@en ;
+      skos:inScheme :ObservedPropertyScheme ;
+      skos:prefLabel "NDVI"@en .
+
+
+###  https://w3id.org/EDAAnOWL/occupancy
+:occupancy rdf:type owl:NamedIndividual ,
+                    skos:Concept ;
+           skos:definition "Usage or occupation rate of facilities"@en ;
+           skos:inScheme :ObservedPropertyScheme ;
+           skos:prefLabel "Occupancy"@en .
+
+
+###  https://w3id.org/EDAAnOWL/precipitation
+:precipitation rdf:type owl:NamedIndividual ,
+                        skos:Concept ;
+               skos:definition "Rainfall, snowfall, or other forms of moisture"@en ;
+               skos:inScheme :ObservedPropertyScheme ;
+               skos:prefLabel "Precipitation"@en .
+
+
+###  https://w3id.org/EDAAnOWL/tabular
+:tabular rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         skos:definition "Structured data in rows and columns"@en ;
+         skos:inScheme :DataTypeScheme ;
+         skos:prefLabel "Tabular"@en .
+
+
+###  https://w3id.org/EDAAnOWL/temperature
+:temperature rdf:type owl:NamedIndividual ,
+                      skos:Concept ;
+             skos:definition "Thermal measurement in degrees"@en ;
+             skos:inScheme :ObservedPropertyScheme ;
+             skos:prefLabel "Temperature"@en .
+
+
+###  https://w3id.org/EDAAnOWL/textual
+:textual rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         skos:definition "Unstructured or semi-structured text data"@en ;
+         skos:inScheme :DataTypeScheme ;
+         skos:prefLabel "Textual"@en .
+
+
+###  https://w3id.org/EDAAnOWL/timeseries
+:timeseries rdf:type owl:NamedIndividual ,
+                     skos:Concept ;
+            skos:definition "Data points indexed in time order"@en ;
+            skos:inScheme :DataTypeScheme ;
+            skos:prefLabel "Time Series"@en .
+
+
+###  https://w3id.org/EDAAnOWL/tourism
+:tourism rdf:type owl:NamedIndividual ,
+                  skos:Concept ;
+         skos:definition "Travel, hospitality, and tourism services"@en ;
+         skos:inScheme :SectorScheme ;
+         skos:prefLabel "Tourism"@en .
+
+
+###  https://w3id.org/EDAAnOWL/transport
+:transport rdf:type owl:NamedIndividual ,
+                    skos:Concept ;
+           skos:definition "Transportation and logistics services"@en ;
+           skos:inScheme :SectorScheme ;
+           skos:prefLabel "Transport"@en .
+
+
+###  https://w3id.org/EDAAnOWL/yield
+:yield rdf:type owl:NamedIndividual ,
+                skos:Concept ;
+       skos:definition "Amount of crop produced per unit area"@en ;
+       skos:inScheme :ObservedPropertyScheme ;
+       skos:prefLabel "Crop Yield"@en .
+
+
 [ ns2:hasEmail <mailto:data-owner@example.org>
 ] .
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
