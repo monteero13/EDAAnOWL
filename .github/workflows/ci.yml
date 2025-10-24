@@ -66,7 +66,11 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
+<<<<<<< HEAD
           java-version: '17'
+=======
+          java-version: '17'   # ROBOT funciona bien con 17
+>>>>>>> 71589e779d2bddb5f3753cae6cfe2f942875affe
 
       - name: Download ROBOT
         run: |
@@ -132,11 +136,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+<<<<<<< HEAD
       - name: Setup Java 11 (Widoco)
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '11'
+=======
+      - name: Setup Java 11 (Widoco compatibility)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'   # Widoco necesita Java 11 por compatibilidad
+>>>>>>> 71589e779d2bddb5f3753cae6cfe2f942875affe
 
       - name: Cache Widoco jar
         uses: actions/cache@v4
@@ -147,13 +159,18 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           WIDOCO_VERSION=1.4.5
+<<<<<<< HEAD
           wget -q "https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar" -O widoco.jar
           java -jar widoco.jar -version
+=======
+          wget -q https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar -O widoco.jar
+>>>>>>> 71589e779d2bddb5f3753cae6cfe2f942875affe
 
       - name: Build docs with Widoco (to /docs/ontology)
         env:
           OUT_DIR: docs/ontology
         run: |
+<<<<<<< HEAD
           mkdir -p "$OUT_DIR"
           # Limpieza selectiva: elimina SOLO lo que genera Widoco
           rm -rf "$OUT_DIR/doc" \
@@ -163,6 +180,11 @@ jobs:
                  "$OUT_DIR/index.html" \
                  "$OUT_DIR/index-en.html" \
                  "$OUT_DIR/.htaccess"
+=======
+          # Elimina y recrea la carpeta documentation completamente
+          rm -rf documentation
+          mkdir -p documentation
+>>>>>>> 71589e779d2bddb5f3753cae6cfe2f942875affe
 
           java -jar widoco.jar \
             -ontFile "$ONT_PATH" \
@@ -173,8 +195,14 @@ jobs:
             -htaccess \
             -lang en
 
+<<<<<<< HEAD
           if [ -f "$OUT_DIR/index-en.html" ]; then
             cp "$OUT_DIR/index-en.html" "$OUT_DIR/index.html"
+=======
+          # Alias cómodo a index.html
+          if [ -f "documentation/index-en.html" ]; then
+            cp documentation/index-en.html documentation/index.html
+>>>>>>> 71589e779d2bddb5f3753cae6cfe2f942875affe
           fi
 
       - name: Upload built docs artifact
@@ -188,6 +216,11 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+<<<<<<< HEAD
           git add docs/ontology/
           git diff --cached --quiet || git commit -m "chore(docs): regenerate Widoco documentation (ontology changed)"
+=======
+          git add documentation/
+          git diff --cached --quiet || git commit -m "chore(docs): regenerate Widoco documentation"
+>>>>>>> 71589e779d2bddb5f3753cae6cfe2f942875affe
           git push
