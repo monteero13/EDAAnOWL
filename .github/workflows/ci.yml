@@ -139,12 +139,13 @@ jobs:
           java-version: '11'
 
       - name: Cache Widoco jar
+        id: cache  # Add an id to the cache step
         uses: actions/cache@v4
         with:
           path: widoco.jar
           key: widoco-1.4.5
       - name: Download Widoco
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true' && steps.cache.outputs.cache-hit != ''
         run: |
           WIDOCO_VERSION=1.4.5
           wget -q "https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar" -O widoco.jar
