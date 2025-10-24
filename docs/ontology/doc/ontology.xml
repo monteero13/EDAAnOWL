@@ -1,0 +1,1041 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="https://w3id.org/EDAAnOWL/"
+     xml:base="https://w3id.org/EDAAnOWL/"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:terms="http://purl.org/dc/terms/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:ns="http://www.w3.org/2006/vcard/ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:odrl="http://www.w3.org/ns/odrl/2/"
+     xmlns:vann="http://purl.org/vocab/vann/"
+     xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <owl:Ontology rdf:about="https://w3id.org/EDAAnOWL/">
+        <owl:versionIRI rdf:resource="https://w3id.org/EDAAnOWL/0.0.1"/>
+        <terms:created rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2025-10-10</terms:created>
+        <terms:creator>
+            <rdf:Description rdf:nodeID="_:genid1">
+                <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+                <foaf:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martín Jerónimo Salvachúa</foaf:name>
+            </rdf:Description>
+        </terms:creator>
+        <terms:description xml:lang="en">Extends IDS to describe Data Apps, Data Profiles, Metrics, Offers/Policies and their fit with BIGOWL (Algorithms, Problems, Workflows).</terms:description>
+        <terms:license rdf:resource="https://creativecommons.org/licenses/by/4.0/"/>
+        <terms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2025-10-20</terms:modified>
+        <terms:title xml:lang="en">EDAAnOWL Ontology (Khaos UMA) — aligned with IDS Information Model</terms:title>
+        <vann:preferredNamespacePrefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">edaan</vann:preferredNamespacePrefix>
+        <vann:preferredNamespaceUri rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://w3id.org/EDAAnOWL/</vann:preferredNamespaceUri>
+        <rdfs:seeAlso rdf:resource="https://w3id.org/BIGOWL/"/>
+        <rdfs:seeAlso rdf:resource="https://w3id.org/idsa/core"/>
+        <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.0.1</owl:versionInfo>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- http://purl.org/dc/terms/created -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/created"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/creator -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/creator"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/description -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/description"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/license -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/license"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/modified -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/modified"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/title -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/title"/>
+    
+
+
+    <!-- http://purl.org/vocab/vann/preferredNamespacePrefix -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/vocab/vann/preferredNamespacePrefix"/>
+    
+
+
+    <!-- http://purl.org/vocab/vann/preferredNamespaceUri -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/vocab/vann/preferredNamespaceUri"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#broader -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#broader"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#definition -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#definition"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#inScheme -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#inScheme"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#prefLabel -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#prefLabel"/>
+    
+
+
+    <!-- http://www.w3.org/2006/vcard/ns#hasEmail -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2006/vcard/ns#hasEmail"/>
+    
+
+
+    <!-- http://www.w3.org/ns/odrl/2/action -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/odrl/2/action"/>
+    
+
+
+    <!-- http://www.w3.org/ns/odrl/2/constraint -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/odrl/2/constraint"/>
+    
+
+
+    <!-- http://www.w3.org/ns/odrl/2/leftOperand -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/odrl/2/leftOperand"/>
+    
+
+
+    <!-- http://www.w3.org/ns/odrl/2/operator -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/odrl/2/operator"/>
+    
+
+
+    <!-- http://www.w3.org/ns/odrl/2/permission -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/odrl/2/permission"/>
+    
+
+
+    <!-- http://www.w3.org/ns/odrl/2/rightOperand -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/odrl/2/rightOperand"/>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/name -->
+
+
+    <owl:AnnotationProperty rdf:about="http://xmlns.com/foaf/0.1/name"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#date -->
+
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#date"/>
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#duration -->
+
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#duration"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- http://purl.org/dc/terms/conformsTo -->
+
+
+    <owl:ObjectProperty rdf:about="http://purl.org/dc/terms/conformsTo"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/subject -->
+
+
+    <owl:ObjectProperty rdf:about="http://purl.org/dc/terms/subject"/>
+    
+
+
+    <!-- http://www.w3.org/ns/dcat#theme -->
+
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/dcat#theme"/>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/compatibleWith -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/compatibleWith">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/odrl/2/Asset"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/odrl/2/Asset"/>
+        <rdfs:comment xml:lang="en">Curated compatibility between resources (dataset↔app, app↔app, profile↔profile).</rdfs:comment>
+        <rdfs:label xml:lang="en">compatible with</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/conformsToProfile -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/conformsToProfile">
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/Resource"/>
+        <rdfs:range rdf:resource="https://w3id.org/EDAAnOWL/DataProfile"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/consumesResource -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/consumesResource">
+        <rdfs:domain rdf:resource="https://w3id.org/BIGOWLWorkflows/Component"/>
+        <rdfs:range rdf:resource="https://w3id.org/idsa/core/Representation"/>
+        <rdfs:label xml:lang="en">consumes representation</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/declaresDataClass -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/declaresDataClass">
+        <rdfs:domain rdf:resource="https://w3id.org/EDAAnOWL/DataProfile"/>
+        <rdfs:range rdf:resource="https://w3id.org/BIGOWLData/Data"/>
+        <rdfs:label xml:lang="en">declares data class</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/declaresObservedProperty -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/declaresObservedProperty">
+        <rdfs:domain rdf:resource="https://w3id.org/EDAAnOWL/DataProfile"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">declares observed property</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/hasDomainSector -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/hasDomainSector">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/dcat#theme"/>
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/DataApp"/>
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">has domain sector</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/implementsComponent -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/implementsComponent">
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/DataApp"/>
+        <rdfs:range rdf:resource="https://w3id.org/BIGOWLWorkflows/Component"/>
+        <rdfs:comment xml:lang="en">Links an IDSA DataApp to the BIGOWL workflow Component it implements.</rdfs:comment>
+        <rdfs:label xml:lang="en">implements component</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/parameter -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/parameter">
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/DataApp"/>
+        <rdfs:range rdf:resource="https://w3id.org/EDAAnOWL/Parameter"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/producesProfile -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/producesProfile">
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/DataApp"/>
+        <rdfs:range rdf:resource="https://w3id.org/EDAAnOWL/DataProfile"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/producesResource -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/producesResource">
+        <rdfs:domain rdf:resource="https://w3id.org/BIGOWLWorkflows/Component"/>
+        <rdfs:range rdf:resource="https://w3id.org/idsa/core/Representation"/>
+        <rdfs:label xml:lang="en">produces representation</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/profileCRSRef -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/profileCRSRef">
+        <rdfs:domain rdf:resource="https://w3id.org/EDAAnOWL/DataProfile"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/odrl/2/Asset"/>
+        <rdfs:label xml:lang="en">profile CRS (IRI)</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/realizesWorkflow -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/realizesWorkflow">
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/DataApp"/>
+        <rdfs:range rdf:resource="http://www.opmw.org/ontology/WorkflowTemplate"/>
+        <rdfs:label xml:lang="en">realizes workflow</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/requiresProfile -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/requiresProfile">
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/DataApp"/>
+        <rdfs:range rdf:resource="https://w3id.org/EDAAnOWL/DataProfile"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/spatialGranularityConcept -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/spatialGranularityConcept">
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">spatial granularity (concept)</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/topic -->
+
+
+    <owl:ObjectProperty rdf:about="https://w3id.org/EDAAnOWL/topic">
+        <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/terms/subject"/>
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">topic</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/computedAt -->
+
+
+    <owl:DatatypeProperty rdf:about="https://w3id.org/EDAAnOWL/computedAt">
+        <rdfs:domain rdf:resource="https://w3id.org/EDAAnOWL/Metric"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label xml:lang="en">computed at</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/metricName -->
+
+
+    <owl:DatatypeProperty rdf:about="https://w3id.org/EDAAnOWL/metricName">
+        <rdfs:domain rdf:resource="https://w3id.org/EDAAnOWL/Metric"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">metric name</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/metricUnit -->
+
+
+    <owl:DatatypeProperty rdf:about="https://w3id.org/EDAAnOWL/metricUnit">
+        <rdfs:domain rdf:resource="https://w3id.org/EDAAnOWL/Metric"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">metric unit</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/metricValue -->
+
+
+    <owl:DatatypeProperty rdf:about="https://w3id.org/EDAAnOWL/metricValue">
+        <rdfs:domain rdf:resource="https://w3id.org/EDAAnOWL/Metric"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label xml:lang="en">metric value</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/profileCRS -->
+
+
+    <owl:DatatypeProperty rdf:about="https://w3id.org/EDAAnOWL/profileCRS">
+        <rdfs:domain rdf:resource="https://w3id.org/EDAAnOWL/DataProfile"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">profile CRS</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/profileSpatialResolution -->
+
+
+    <owl:DatatypeProperty rdf:about="https://w3id.org/EDAAnOWL/profileSpatialResolution">
+        <rdfs:domain rdf:resource="https://w3id.org/EDAAnOWL/DataProfile"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">profile spatial resolution</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/profileTemporalResolution -->
+
+
+    <owl:DatatypeProperty rdf:about="https://w3id.org/EDAAnOWL/profileTemporalResolution">
+        <rdfs:domain rdf:resource="https://w3id.org/EDAAnOWL/DataProfile"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#duration"/>
+        <rdfs:label xml:lang="en">profile temporal resolution</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/spatialGranularity -->
+
+
+    <owl:DatatypeProperty rdf:about="https://w3id.org/EDAAnOWL/spatialGranularity">
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">spatial granularity</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/supportContact -->
+
+
+    <owl:DatatypeProperty rdf:about="https://w3id.org/EDAAnOWL/supportContact">
+        <rdfs:domain rdf:resource="https://w3id.org/idsa/core/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">Support email/URL for a resource or service.</rdfs:comment>
+        <rdfs:label xml:lang="en">support contact</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- http://www.opmw.org/ontology/WorkflowTemplate -->
+
+
+    <owl:Class rdf:about="http://www.opmw.org/ontology/WorkflowTemplate"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#Concept -->
+
+
+    <owl:Class rdf:about="http://www.w3.org/2004/02/skos/core#Concept"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#ConceptScheme -->
+
+
+    <owl:Class rdf:about="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    
+
+
+    <!-- http://www.w3.org/ns/odrl/2/Asset -->
+
+
+    <owl:Class rdf:about="http://www.w3.org/ns/odrl/2/Asset"/>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/Person -->
+
+
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person"/>
+    
+
+
+    <!-- https://w3id.org/BIGOWLData/Data -->
+
+
+    <owl:Class rdf:about="https://w3id.org/BIGOWLData/Data"/>
+    
+
+
+    <!-- https://w3id.org/BIGOWLWorkflows/Component -->
+
+
+    <owl:Class rdf:about="https://w3id.org/BIGOWLWorkflows/Component"/>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/AnalyzerApp -->
+
+
+    <owl:Class rdf:about="https://w3id.org/EDAAnOWL/AnalyzerApp">
+        <rdfs:subClassOf rdf:resource="https://w3id.org/idsa/core/SmartDataApp"/>
+        <rdfs:comment xml:lang="en">A smart data app for descriptive/diagnostic analysis (profiling, summarization, outlier detection).</rdfs:comment>
+        <rdfs:label xml:lang="en">Analyzer App</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/DataProfile -->
+
+
+    <owl:Class rdf:about="https://w3id.org/EDAAnOWL/DataProfile">
+        <rdfs:comment xml:lang="en">Facet bag describing data characteristics (domain, type, observed props, CRS, geometry, resolutions).</rdfs:comment>
+        <rdfs:label xml:lang="en">Data Profile</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/Metric -->
+
+
+    <owl:Class rdf:about="https://w3id.org/EDAAnOWL/Metric">
+        <rdfs:label xml:lang="en">Metric</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/Parameter -->
+
+
+    <owl:Class rdf:about="https://w3id.org/EDAAnOWL/Parameter">
+        <rdfs:label xml:lang="en">Parameter</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/PerformanceMetric -->
+
+
+    <owl:Class rdf:about="https://w3id.org/EDAAnOWL/PerformanceMetric">
+        <rdfs:subClassOf rdf:resource="https://w3id.org/EDAAnOWL/Metric"/>
+        <rdfs:label xml:lang="en">Performance Metric</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/PredictionApp -->
+
+
+    <owl:Class rdf:about="https://w3id.org/EDAAnOWL/PredictionApp">
+        <rdfs:subClassOf rdf:resource="https://w3id.org/idsa/core/SmartDataApp"/>
+        <rdfs:comment xml:lang="en">A smart data app that produces predictions/inferences from input data using a model or algorithm.</rdfs:comment>
+        <rdfs:label xml:lang="en">Prediction App</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/QualityMetric -->
+
+
+    <owl:Class rdf:about="https://w3id.org/EDAAnOWL/QualityMetric">
+        <rdfs:subClassOf rdf:resource="https://w3id.org/EDAAnOWL/Metric"/>
+        <rdfs:label xml:lang="en">Quality Metric</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/VisualizationApp -->
+
+
+    <owl:Class rdf:about="https://w3id.org/EDAAnOWL/VisualizationApp">
+        <rdfs:subClassOf rdf:resource="https://w3id.org/idsa/core/SmartDataApp"/>
+        <rdfs:comment xml:lang="en">A smart data app that renders data into visual views/reports without altering underlying data.</rdfs:comment>
+        <rdfs:label xml:lang="en">Visualization App</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://w3id.org/idsa/core/DataApp -->
+
+
+    <owl:Class rdf:about="https://w3id.org/idsa/core/DataApp"/>
+    
+
+
+    <!-- https://w3id.org/idsa/core/DataResource -->
+
+
+    <owl:Class rdf:about="https://w3id.org/idsa/core/DataResource"/>
+    
+
+
+    <!-- https://w3id.org/idsa/core/Representation -->
+
+
+    <owl:Class rdf:about="https://w3id.org/idsa/core/Representation"/>
+    
+
+
+    <!-- https://w3id.org/idsa/core/Resource -->
+
+
+    <owl:Class rdf:about="https://w3id.org/idsa/core/Resource"/>
+    
+
+
+    <!-- https://w3id.org/idsa/core/SmartDataApp -->
+
+
+    <owl:Class rdf:about="https://w3id.org/idsa/core/SmartDataApp">
+        <rdfs:subClassOf rdf:resource="https://w3id.org/idsa/core/DataApp"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- https://w3id.org/BIGOWLAlgorithms/RFPredict -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/BIGOWLAlgorithms/RFPredict"/>
+    
+
+
+    <!-- https://w3id.org/BIGOWLProblems/Prediction -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/BIGOWLProblems/Prediction"/>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/AgroVocab -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/AgroVocab">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+        <terms:description xml:lang="en">Specialized vocabulary for agricultural data and applications.</terms:description>
+        <terms:title xml:lang="en">Agricultural Domain Vocabulary</terms:title>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/DataTypeScheme -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/DataTypeScheme">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+        <terms:description xml:lang="en">Categories for classifying data types and formats.</terms:description>
+        <terms:title xml:lang="en">Data Type Categories</terms:title>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/ObservedPropertyScheme -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/ObservedPropertyScheme">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+        <terms:description xml:lang="en">Properties that can be observed or measured in datasets.</terms:description>
+        <terms:title xml:lang="en">Observed Properties</terms:title>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/SectorScheme -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/SectorScheme">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+        <terms:description xml:lang="en">Sectors for tagging data assets and applications by economic or thematic domain.</terms:description>
+        <terms:title xml:lang="en">Economic and Domain Sectors</terms:title>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/agriculture -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/agriculture">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Crop production, livestock, and agricultural activities</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/SectorScheme"/>
+        <skos:prefLabel xml:lang="en">Agriculture</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/agro_fertilization -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/agro_fertilization">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Application of fertilizers to soil</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/AgroVocab"/>
+        <skos:prefLabel xml:lang="en">Fertilization</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/agro_harvest -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/agro_harvest">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Crop harvesting activities and timing</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/AgroVocab"/>
+        <skos:prefLabel xml:lang="en">Harvest</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/agro_irrigation -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/agro_irrigation">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Artificial application of water to land</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/AgroVocab"/>
+        <skos:prefLabel xml:lang="en">Irrigation</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/agro_maize -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/agro_maize">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:broader rdf:resource="https://w3id.org/EDAAnOWL/agriculture"/>
+        <skos:definition xml:lang="en">Corn, Zea mays</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/AgroVocab"/>
+        <skos:prefLabel xml:lang="en">Maize</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/agro_olive -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/agro_olive">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:broader rdf:resource="https://w3id.org/EDAAnOWL/agriculture"/>
+        <skos:definition xml:lang="en">Olive tree cultivation and oil production</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/AgroVocab"/>
+        <skos:prefLabel xml:lang="en">Olive</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/agro_wheat -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/agro_wheat">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:broader rdf:resource="https://w3id.org/EDAAnOWL/agriculture"/>
+        <skos:definition xml:lang="en">Cereal grain, genus Triticum</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/AgroVocab"/>
+        <skos:prefLabel xml:lang="en">Wheat</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/energy -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/energy">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Energy production, distribution, and consumption</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/SectorScheme"/>
+        <skos:prefLabel xml:lang="en">Energy</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/georaster -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/georaster">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Grid-based geospatial data (satellite imagery, DEM)</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/DataTypeScheme"/>
+        <skos:prefLabel xml:lang="en">Geospatial Raster</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/geovector -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/geovector">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Vector-based geospatial data (points, lines, polygons)</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/DataTypeScheme"/>
+        <skos:prefLabel xml:lang="en">Geospatial Vector</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/health -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/health">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Healthcare, medical services, and public health</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/SectorScheme"/>
+        <skos:prefLabel xml:lang="en">Health</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/ndvi -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/ndvi">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Normalized Difference Vegetation Index</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/ObservedPropertyScheme"/>
+        <skos:prefLabel xml:lang="en">NDVI</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/occupancy -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/occupancy">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Usage or occupation rate of facilities</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/ObservedPropertyScheme"/>
+        <skos:prefLabel xml:lang="en">Occupancy</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/precipitation -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/precipitation">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Rainfall, snowfall, or other forms of moisture</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/ObservedPropertyScheme"/>
+        <skos:prefLabel xml:lang="en">Precipitation</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/tabular -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/tabular">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Structured data in rows and columns</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/DataTypeScheme"/>
+        <skos:prefLabel xml:lang="en">Tabular</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/temperature -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/temperature">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Thermal measurement in degrees</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/ObservedPropertyScheme"/>
+        <skos:prefLabel xml:lang="en">Temperature</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/textual -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/textual">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Unstructured or semi-structured text data</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/DataTypeScheme"/>
+        <skos:prefLabel xml:lang="en">Textual</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/timeseries -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/timeseries">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Data points indexed in time order</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/DataTypeScheme"/>
+        <skos:prefLabel xml:lang="en">Time Series</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/tourism -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/tourism">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Travel, hospitality, and tourism services</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/SectorScheme"/>
+        <skos:prefLabel xml:lang="en">Tourism</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/transport -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/transport">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Transportation and logistics services</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/SectorScheme"/>
+        <skos:prefLabel xml:lang="en">Transport</skos:prefLabel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://w3id.org/EDAAnOWL/yield -->
+
+
+    <owl:NamedIndividual rdf:about="https://w3id.org/EDAAnOWL/yield">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:definition xml:lang="en">Amount of crop produced per unit area</skos:definition>
+        <skos:inScheme rdf:resource="https://w3id.org/EDAAnOWL/ObservedPropertyScheme"/>
+        <skos:prefLabel xml:lang="en">Crop Yield</skos:prefLabel>
+    </owl:NamedIndividual>
+    <rdf:Description rdf:nodeID="_:genid2">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <foaf:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martín Jerónimo Salvachúa</foaf:name>
+    </rdf:Description>
+    <rdf:Description>
+        <ns:hasEmail rdf:resource="mailto:data-owner@example.org"/>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 5.1.0) https://github.com/owlcs/owlapi/ -->
+
+
