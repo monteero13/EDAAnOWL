@@ -23,7 +23,7 @@
                               owl:versionIRI <https://w3id.org/EDAAnOWL/0.0.1> ;
                               dct:created "2025-10-10"^^xsd:date ;
                               dct:creator [ rdf:type foaf:Person ;
-                                            foaf:name "Martín Jerónimo Salvachúa Galimberti"
+                                            foaf:name "Martín Jerónimo Salvachúa"
                                           ] ;
                               dct:description "Extends IDS to describe Data Apps, Data Profiles, Metrics, Offers/Policies and their fit with BIGOWL (Algorithms, Problems, Workflows)."@en ;
                               dct:license <https://creativecommons.org/licenses/by/4.0/> ;
