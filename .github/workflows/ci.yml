@@ -156,7 +156,6 @@ jobs:
                  "$OUT_DIR/index-en.html" \
                  "$OUT_DIR/.htaccess" \
                  "$OUT_DIR/edaan-owl.owl" \
-                 "$OUT_DIR/edaan-owl.rdf" \
                  "$OUT_DIR/edaan-owl.nt"
 
           # Genera doc desde la ontología en /docs/ontology
@@ -169,10 +168,9 @@ jobs:
             -htaccess \
             -lang en
 
-          # Generar formatos adicionales usando ROBOT (sin jsonld)
+          # Generar formatos adicionales usando ROBOT
           echo "Generating additional formats..."
           java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.owl" --format owl
-          java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.rdf" --format rdfxml
           java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.nt" --format nt
 
           # Mover documentación de doc/ al directorio principal
