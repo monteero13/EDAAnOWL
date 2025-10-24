@@ -168,11 +168,6 @@ jobs:
             -htaccess \
             -lang en
 
-          # Generar formatos adicionales usando ROBOT
-          echo "Generating additional formats..."
-          java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.owl" --format owl
-          java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.nt" --format nt
-
           # Mover documentación de doc/ al directorio principal
           if [ -d "$OUT_DIR/doc" ]; then
             echo "Moving documentation from doc/ to root..."
