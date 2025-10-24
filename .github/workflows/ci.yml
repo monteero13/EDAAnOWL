@@ -156,7 +156,6 @@ jobs:
                  "$OUT_DIR/index-en.html" \
                  "$OUT_DIR/.htaccess" \
                  "$OUT_DIR/edaan-owl.owl" \
-                 "$OUT_DIR/edaan-owl.jsonld" \
                  "$OUT_DIR/edaan-owl.rdf" \
                  "$OUT_DIR/edaan-owl.nt"
 
@@ -170,10 +169,9 @@ jobs:
             -htaccess \
             -lang en
 
-          # Generar formatos adicionales usando ROBOT
+          # Generar formatos adicionales usando ROBOT (sin jsonld)
           echo "Generating additional formats..."
           java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.owl" --format owl
-          java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.jsonld" --format jsonld
           java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.rdf" --format rdfxml
           java -jar robot.jar convert --input "$ONT_PATH" --output "$OUT_DIR/edaan-owl.nt" --format nt
 
