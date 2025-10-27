@@ -1,38 +1,44 @@
 @prefix : <https://w3id.org/EDAAnOWL/> .
-@prefix ex: <https://w3id.org/EDAAnOWL/example/> .
+@prefix ex: <https://w3id.org/EDAAnOWL/examples/minimal/> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix ids: <https://w3id.org/idsa/core/> .
 @prefix odrl: <http://www.w3.org/ns/odrl/2/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix bigalg: <https://w3id.org/BIGOWLAlgorithms/> .
+@prefix bigprob: <https://w3id.org/BIGOWLProblems/> .
+@prefix bigdat: <https://w3id.org/BIGOWLData/> .
 
-### Ejemplo mínimo válido que pasa la validación SHACL
+# --- Prefijos para los vocabularios SKOS ---
+@prefix sector: <https://w3id.org/EDAAnOWL/vocabularies/sector-scheme#> .
+@prefix dtype: <https://w3id.org/EDAAnOWL/vocabularies/datatype-scheme#> .
+@prefix obs: <https://w3id.org/EDAAnOWL/vocabularies/observed-properties#> .
 
 ex:MinimalDataResource a ids:DataResource ;
     dct:title "Minimal Test Dataset"@en ;
-    :hasDomainSector :agriculture ;
+    :hasDomainSector sector:agriculture ;
     :conformsToProfile ex:MinimalProfile ;
     :supportContact "test@example.org" .
 
 ex:MinimalProfile a :DataProfile ;
     dct:title "Minimal Data Profile"@en ;
-    :declaresDataClass :TestDataClass ;
-    :declaresObservedProperty :yield .
+    :declaresDataClass ex:TestDataClass ;
+    :declaresObservedProperty obs:yield .
 
-:TestDataClass a :DataClassExample ;
+ex:TestDataClass a bigdat:Data ;
     rdfs:label "Test Data Class"@en .
 
 ex:MinimalDataApp a ids:DataApp ;
     dct:title "Minimal Test App"@en ;
-    :declaresAlgorithm :TestAlgorithm ;
-    :solvesProblem :TestProblem ;
-    :hasDomainSector :agriculture ;
+    :declaresAlgorithm ex:TestAlgorithm ;
+    :solvesProblem ex:TestProblem ;
+    :hasDomainSector sector:agriculture ;
     :requiresProfile ex:MinimalProfile .
 
-:TestAlgorithm a :RFAlgorithmExample ;
+ex:TestAlgorithm a bigalg:Algorithm ;
     rdfs:label "Test Algorithm"@en .
 
-:TestProblem a :PredictionProblemExample ;
+ex:TestProblem a bigprob:Problem ;
     rdfs:label "Test Problem"@en .
 
 ex:MinimalOffer a ids:ContractOffer ;

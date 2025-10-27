@@ -1,0 +1,41 @@
+@prefix : <https://w3id.org/EDAAnOWL/> .
+@prefix ex: <https://w3id.org/EDAAnOWL/examples/agriculture/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ids: <https://w3id.org/idsa/core/> .
+@prefix bigwf: <https://w3id.org/BIGOWLWorkflows/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# --- Prefijos para los vocabularios SKOS ---
+@prefix sector: <https://w3id.org/EDAAnOWL/vocabularies/sector-scheme#> .
+@prefix dtype: <https://w3id.org/EDAAnOWL/vocabularies/datatype-scheme#> .
+@prefix obs: <https://w3id.org/EDAAnOWL/vocabularies/observed-properties#> .
+
+### Perfil de entrada: Datos climáticos
+ex:Profile_Repilo_Input_Climate rdf:type :DataProfile ;
+    dct:description "Perfil para datos climáticos requeridos por el modelo Repilo."@es ;
+    :declaresDataClass dtype:timeseries ,
+                       dtype:tabular ;
+    :declaresObservedProperty obs:temperature ,
+                              obs:precipitation .
+
+### Perfil de salida: Incidencia de la enfermedad
+ex:Profile_Repilo_Output_Incidence rdf:type :DataProfile ;
+    dct:description "Perfil para la predicción de incidencia de Repilo."@es ;
+    :declaresDataClass dtype:georaster ;
+    :declaresObservedProperty obs:repiloIncidence . # Concepto que añadimos
+
+### Anotación del Asset "Repilo1.0.0" del catalog.json
+ex:Repilo1.0.0 rdf:type :PredictionApp ,
+                         ids:DataApp ;
+    dct:title "Repilo" ;
+    dct:description "El repilo del olivo es una enfermedad... Este modelo utiliza datos climáticos..." ;
+    dcat:keyword "olivo", "prediction", "temperature" ;
+    :hasDomainSector sector:agriculture ;
+
+    # --- La conexión clave con EDAAnOWL ---
+    :requiresProfile ex:Profile_Repilo_Input_Climate ;
+    :producesProfile ex:Profile_Repilo_Output_Incidence ;
+
+    # --- La conexión clave con BIGOWL ---
+    :implementsComponent <https://w3id.org/BIGOWLWorkflows/Component/BetaModel> .

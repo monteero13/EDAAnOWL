@@ -15,25 +15,24 @@ def validate_rdf_file(file_path):
     try:
         g = Graph()
         g.parse(file_path, format='turtle')
-        print(f"{file_path} - Valid RDF/Turtle")
+        print(f"✅ [OK] {file_path}")
         return True
     except BadSyntax as e:
-        print(f"{file_path} - Syntax error: {e}")
+        print(f"❌ [FAIL] {file_path} - Syntax error: {e}")
         return False
     except Exception as e:
-        print(f"{file_path} - Error: {e}")
+        print(f"❌ [FAIL] {file_path} - Error: {e}")
         return False
 
 def main():
     """Main validation function"""
     print("🔍 EDAAnOWL RDF Syntax Validation")
     
-    # Define directories to check
     directories = [
-        "ontology",
-        "ontology/vocab", 
-        "examples",
-        "examples/agriculture",
+        "docs/ontology",
+        "docs/vocabularies", 
+        "docs/examples",
+        "docs/examples/agriculture",
         "shapes",
         "tests"
     ]
@@ -42,28 +41,31 @@ def main():
     total_files = 0
     has_errors = False
     
+    print(f"Checking directories: {directories}\n")
+    
     for directory in directories:
         if not os.path.exists(directory):
-            print(f"Directory not found: {directory}")
+            print(f"⚠️ [WARN] Directory not found, skipping: {directory}")
             continue
             
-        for file_path in Path(directory).glob("**/*.ttl"):
+        # Usamos rglob para buscar recursivamente
+        for file_path in Path(directory).rglob("*.ttl"):
             total_files += 1
             if validate_rdf_file(file_path):
                 valid_files += 1
             else:
                 has_errors = True
     
-    print(f"\n Validation Summary:")
+    print(f"\n--- Validation Summary ---")
     print(f"   Total files: {total_files}")
     print(f"   Valid files: {valid_files}")
     print(f"   Invalid files: {total_files - valid_files}")
     
     if has_errors:
-        print("Validation failed - Syntax errors found")
+        print("\n❌ Validation FAILED - Syntax errors found")
         sys.exit(1)
     else:
-        print("All RDF files are syntactically valid")
+        print("\n✅ All RDF files are syntactically valid")
         sys.exit(0)
 
 if __name__ == "__main__":

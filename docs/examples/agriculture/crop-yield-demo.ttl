@@ -5,23 +5,28 @@
 @prefix odrl: <http://www.w3.org/ns/odrl/2/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix bigalg: <https://w3id.org/BIGOWLAlgorithms> .
-@prefix bigprob: <https://w3id.org/BIGOWLProblems> .
-@prefix bigdat: <https://w3id.org/BIGOWLData> .
+@prefix bigalg: <https://w3id.org/BIGOWLAlgorithms/> .
+@prefix bigprob: <https://w3id.org/BIGOWLProblems/> .
+@prefix bigdat: <https://w3id.org/BIGOWLData/> .
+
+# --- Prefijos para los vocabularios SKOS ---
+@prefix sector: <https://w3id.org/EDAAnOWL/vocabularies/sector-scheme#> .
+@prefix agro: <https://w3id.org/EDAAnOWL/vocabularies/agro-vocab#> .
+@prefix obs: <https://w3id.org/EDAAnOWL/vocabularies/observed-properties#> .
 
 ex:AndalusiaCropYield2024 a ids:DataResource ;
     dct:title "Andalusia Crop Yield Dataset 2024"@en ;
     dct:description "Annual crop yield data for Andalusia region, 2024"@en ;
-    :hasDomainSector :agriculture ;
-    :topic :agro_wheat, :agro_olive ;
+    :hasDomainSector sector:agriculture ;
+    :topic agro:agro_wheat, agro:agro_olive ;
     :conformsToProfile ex:AgriYieldProfile ;
     :hasOffer ex:AgriDataOffer ;
     :supportContact "agri-data@example.org" .
 
 ex:AgriYieldProfile a :DataProfile ;
     dct:title "Agricultural Yield Profile"@en ;
-    :declaresDataClass :DataClassExample ;
-    :declaresObservedProperty :yield ;
+    :declaresDataClass ex:DataClassExample ;
+    :declaresObservedProperty obs:yield ;
     :profileSpatialResolution "municipality" ;
     :profileTemporalResolution "P1Y"^^xsd:duration ;
     :profileCRS "EPSG:4326" .
@@ -29,11 +34,11 @@ ex:AgriYieldProfile a :DataProfile ;
 ex:CropPredictorApp a :PredictionApp ;
     dct:title "Crop Yield Predictor"@en ;
     dct:description "Machine learning app for crop yield prediction"@en ;
-    :declaresAlgorithm :RFAlgorithmExample ;
-    :solvesProblem :PredictionProblemExample ;
+    :declaresAlgorithm ex:RFAlgorithmExample ;
+    :solvesProblem ex:PredictionProblemExample ;
     :requiresProfile ex:AgriYieldProfile ;
-    :hasDomainSector :agriculture ;
-    :compatibleWith ex:AndalusiaCropYield2024 ;
+    :hasDomainSector sector:agriculture ;
+    # --- :compatibleWith eliminado ---
     :supportContact "support@agri-apps.example.org" .
 
 ex:AgriDataOffer a ids:ContractOffer ;
@@ -48,11 +53,11 @@ ex:AgriDataOffer a ids:ContractOffer ;
     ] .
 
 ### Individuos locales para BIGOWL
-:RFAlgorithmExample a bigalg:Algorithm ;
+ex:RFAlgorithmExample a bigalg:Algorithm ;
     rdfs:label "Random Forest Predictor"@en .
 
-:PredictionProblemExample a bigprob:Problem ;
+ex:PredictionProblemExample a bigprob:Problem ;
     rdfs:label "Yield Prediction Problem"@en .
 
-:DataClassExample a bigdat:Data ;
+ex:DataClassExample a bigdat:Data ;
     rdfs:label "Agricultural Time Series Data"@en .

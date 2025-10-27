@@ -25,7 +25,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Cache pip
         uses: actions/cache@v4
@@ -43,8 +43,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'   # ROBOT funciona bien con 17
+          distribution: "temurin"
+          java-version: "17" # ROBOT funciona bien con 17
 
       - name: Download ROBOT
         run: |
@@ -52,7 +52,7 @@ jobs:
           java -jar robot.jar --version
 
       - name: RDF syntax check (rdflib via script)
-        run: python docs/scripts/check_rdf.py
+        run: python scripts/check_rdf.py
 
       - name: OWL profile & basic consistency (ROBOT)
         run: |
@@ -68,7 +68,7 @@ jobs:
       - name: SHACL (minimal example MUST pass)
         run: |
           mkdir -p reports
-          pyshacl -s docs/shapes/edaan-shapes.ttl -d docs/examples/minimal-example.ttl -m -f human -o reports/shacl-minimal.txt
+          pyshacl -s shapes/edaan-shapes.ttl -d docs/examples/minimal-example.ttl -m -f human -o reports/shacl-minimal.txt
           echo "📄 SHACL (minimal):"
           cat reports/shacl-minimal.txt
           if grep -qi "violation" reports/shacl-minimal.txt; then
@@ -78,7 +78,7 @@ jobs:
 
       - name: SHACL (ontology info-only)
         run: |
-          pyshacl -s docs/shapes/edaan-shapes.ttl -d docs/ontology/edaan-owl.ttl -m -f human -o reports/shacl-ontology.txt || true
+          pyshacl -s shapes/edaan-shapes.ttl -d docs/ontology/edaan-owl.ttl -m -f human -o reports/shacl-ontology.txt || true
           echo "📄 SHACL (ontology):"
           cat reports/shacl-ontology.txt || true
 
@@ -114,8 +114,8 @@ jobs:
       - name: Setup Java 11 (Widoco + ROBOT)
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '11'   # Usar Java 11 para ambas herramientas
+          distribution: "temurin"
+          java-version: "11" # Usar Java 11 para ambas herramientas
 
       - name: Download ROBOT (Java 11 compatible)
         run: |
@@ -141,7 +141,7 @@ jobs:
           set -e
           OUT_DIR="docs/ontology"
           ONT_PATH="docs/ontology/edaan-owl.ttl"
-          
+
           test -f "$ONT_PATH" || { echo "Ontology file not found at $ONT_PATH"; exit 1; }
 
           echo "Building documentation for: $ONT_PATH"
@@ -171,13 +171,13 @@ jobs:
             mv "$OUT_DIR"/doc/* "$OUT_DIR"/
             rmdir "$OUT_DIR/doc"
           fi
-          
+
           # Actualizar rutas
           if [ -f "$OUT_DIR/.htaccess" ]; then
             sed -i 's|/doc/|/|g' "$OUT_DIR/.htaccess"
             sed -i 's|doc/||g' "$OUT_DIR/.htaccess"
           fi
-          
+
           find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|href="doc/|href="|g' {} \;
           find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|src="doc/|src="|g' {} \;
 

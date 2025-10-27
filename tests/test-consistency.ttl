@@ -6,24 +6,37 @@
 @prefix bigprob: <https://w3id.org/BIGOWLProblems> .
 @prefix bigdat: <https://w3id.org/BIGOWLData> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<https://w3id.org/EDAAnOWL/test/> rdf:type owl:Ontology ;
+    owl:imports <https://w3id.org/EDAAnOWL/> .
 
 ### Test válido - debería pasar
 test:ValidApp a ids:DataApp ;
     dct:title "Valid Test App"@en ;
     :declaresAlgorithm :TestAlgorithm ;
     :solvesProblem :TestProblem ;
-    :hasDomainSector :agriculture .
+    :hasDomainSector :agriculture . # :agriculture se resuelve gracias al import
 
 test:ValidResource a ids:DataResource ;
     dct:title "Valid Test Resource"@en ;
     :hasDomainSector :agriculture ;
     :conformsToProfile test:TestProfile .
 
-test:TestProfile a :DataProfile ;
-    dct:title "Test Profile"@en .
+test:TestProfile a :DataProfile ; # :DataProfile se resuelve gracias al import
+    dct:title "Test Profile"@en ;
+    # Añadido para pasar la nueva shape de DataProfile
+    :declaresDataClass :TestDataClass ;
+    :declaresObservedProperty :TestProperty .
 
 :TestAlgorithm a bigalg:Algorithm ;
     rdfs:label "Test Algorithm"@en .
 
 :TestProblem a bigprob:Problem ;
     rdfs:label "Test Problem"@en .
+
+:TestDataClass a bigdat:Data ;
+    rdfs:label "Test Data Class"@en .
+    
+:TestProperty rdfs:label "Test Property"@en .

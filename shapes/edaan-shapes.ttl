@@ -1,0 +1,95 @@
+@prefix : <https://w3id.org/EDAAnOWL/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ids: <https://w3id.org/idsa/core/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+###
+### Shapes para Clases de IDSA (DataApp, DataResource)
+###
+
+:DataAppShape a sh:NodeShape ;
+    sh:targetClass ids:DataApp ;
+    rdfs:label "Data App Shape"@en ;
+    
+    # Propiedad obligatoria: dct:title
+    sh:property [
+        sh:path dct:title ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:Literal ;
+        sh:message "DataApp must have at least one dct:title"@en ;
+    ] ;
+    
+    # Propiedad obligatoria: :hasDomainSector
+    sh:property [
+        sh:path :hasDomainSector ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ; # Reforzado: debe ser un IRI (un skos:Concept)
+        sh:message "DataApp must have at least one :hasDomainSector"@en ;
+    ] .
+
+:DataResourceShape a sh:NodeShape ;
+    sh:targetClass ids:DataResource ;
+    rdfs:label "Data Resource Shape"@en ;
+
+    # Propiedad obligatoria: dct:title
+    sh:property [
+        sh:path dct:title ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:Literal ;
+        sh:message "DataResource must have at least one dct:title"@en ;
+    ] ;
+    
+    # Propiedad obligatoria: :conformsToProfile
+    sh:property [
+        sh:path :conformsToProfile ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ; # Reforzado: debe enlazar a un DataProfile
+        sh:message "DataResource must conform to at least one :DataProfile"@en ;
+    ] .
+
+###
+### Shapes para Clases EDAAnOWL (DataProfile, Metric)
+###
+
+:DataProfileShape a sh:NodeShape ;
+    sh:targetClass :DataProfile ;
+    rdfs:label "Data Profile Shape"@en ;
+    
+    # NUEVA SHAPE: Un DataProfile es la clave de la ontología
+    
+    sh:property [
+        sh:path dct:title ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:Literal ;
+        sh:message "DataProfile must have at least one dct:title"@en ;
+    ] ;
+    sh:property [
+        sh:path :declaresDataClass ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:message "DataProfile must declare at least one data class (e.g., :tabular, :georaster)"@en ;
+    ] ;
+    sh:property [
+        sh:path :declaresObservedProperty ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:message "DataProfile must declare at least one observed property (e.g., :ndvi, :yield)"@en ;
+    ] .
+
+
+:MetricValidationShape a sh:NodeShape ;
+    sh:targetClass :Metric ;
+    sh:property [
+        sh:path :metricName ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Metric must have a :metricName (string)"@en ;
+    ] ;
+    sh:property [
+        sh:path :metricValue ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:Literal ; # Reforzado: Acepta cualquier literal numérico (decimal, integer, etc.)
+        sh:message "Metric must have a numeric :metricValue"@en ;
+    ] .
