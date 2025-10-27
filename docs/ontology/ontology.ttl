@@ -8,6 +8,15 @@
 
 <https://w3id.org/EDAAnOWL/> rdf:type owl:Ontology ;
                               owl:versionIRI : ;
+                              owl:imports <https://w3id.org/BIGOWLAlgorithms/> ,
+                                          <https://w3id.org/BIGOWLData/> ,
+                                          <https://w3id.org/BIGOWLProblems/> ,
+                                          <https://w3id.org/BIGOWLWorkflows/> ,
+                                          <https://w3id.org/EDAAnOWL/vocabularies/agro-vocab> ,
+                                          <https://w3id.org/EDAAnOWL/vocabularies/datatype-scheme> ,
+                                          <https://w3id.org/EDAAnOWL/vocabularies/observed-properties> ,
+                                          <https://w3id.org/EDAAnOWL/vocabularies/sector-scheme> ,
+                                          <https://w3id.org/idsa/core/> ;
                               <http://purl.org/dc/terms/created> "2025-10-10"^^xsd:date ;
                               <http://purl.org/dc/terms/creator> _:genid1 ;
                               <http://purl.org/dc/terms/description> "Extends IDS to describe Data Apps, Data Profiles, Metrics, Offers/Policies and their fit with BIGOWL (Algorithms, Problems, Workflows)."@en ;
@@ -133,15 +142,6 @@ xsd:duration rdf:type rdfs:Datatype .
 
 ###  http://www.w3.org/ns/dcat#theme
 <http://www.w3.org/ns/dcat#theme> rdf:type owl:ObjectProperty .
-
-
-###  https://w3id.org/EDAAnOWL/compatibleWith
-:compatibleWith rdf:type owl:ObjectProperty ,
-                         owl:SymmetricProperty ;
-                rdfs:domain <http://www.w3.org/ns/odrl/2/Asset> ;
-                rdfs:range <http://www.w3.org/ns/odrl/2/Asset> ;
-                rdfs:comment "Curated compatibility between resources (dataset↔app, app↔app, profile↔profile)."@en ;
-                rdfs:label "compatible with"@en .
 
 
 ###  https://w3id.org/EDAAnOWL/conformsToProfile

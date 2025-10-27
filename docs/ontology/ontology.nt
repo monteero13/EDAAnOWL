@@ -1,5 +1,14 @@
 <https://w3id.org/EDAAnOWL/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
 <https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#versionIRI> <https://w3id.org/EDAAnOWL/0.0.1> .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/BIGOWLAlgorithms/> .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/BIGOWLData/> .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/BIGOWLProblems/> .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/BIGOWLWorkflows/> .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/EDAAnOWL/vocabularies/agro-vocab> .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/EDAAnOWL/vocabularies/datatype-scheme> .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/EDAAnOWL/vocabularies/observed-properties> .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/EDAAnOWL/vocabularies/sector-scheme> .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/idsa/core/> .
 <https://w3id.org/EDAAnOWL/> <http://purl.org/dc/terms/created> "2025-10-10"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/EDAAnOWL/> <http://purl.org/dc/terms/creator> _:genid1 .
 _:genid1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
@@ -114,14 +123,6 @@ _:genid1 <http://xmlns.com/foaf/0.1/name> "Mart\u00EDn Jer\u00F3nimo Salvach\u00
 # 
 # http://www.w3.org/ns/dcat#theme
 <http://www.w3.org/ns/dcat#theme> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-# 
-# https://w3id.org/EDAAnOWL/compatibleWith
-<https://w3id.org/EDAAnOWL/compatibleWith> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<https://w3id.org/EDAAnOWL/compatibleWith> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#SymmetricProperty> .
-<https://w3id.org/EDAAnOWL/compatibleWith> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.w3.org/ns/odrl/2/Asset> .
-<https://w3id.org/EDAAnOWL/compatibleWith> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/ns/odrl/2/Asset> .
-<https://w3id.org/EDAAnOWL/compatibleWith> <http://www.w3.org/2000/01/rdf-schema#comment> "Curated compatibility between resources (dataset\u2194app, app\u2194app, profile\u2194profile)."@en .
-<https://w3id.org/EDAAnOWL/compatibleWith> <http://www.w3.org/2000/01/rdf-schema#label> "compatible with"@en .
 # 
 # https://w3id.org/EDAAnOWL/conformsToProfile
 <https://w3id.org/EDAAnOWL/conformsToProfile> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
