@@ -88,16 +88,15 @@ jobs:
 
       - name: Build docs for 'latest'
         run: |
-          # Genera la documentación usando la ontología en 'latest'
           java -jar widoco.jar \
             -ontFile docs/latest/edaan-owl.ttl \
-            -outFolder docs/latest \ # Guarda la salida directamente en 'latest'
-            -getOntologyMetadata \ # <-- Lee metadatos del TTL (¡Importante!)
+            -outFolder docs/latest \
+            -getOntologyMetadata \
             -rewriteAll \
             -webVowl \
             -htaccess \
             -lang en
-          # Renombra el índice para compatibilidad con GitHub Pages
+          # Rename index file for GitHub Pages compatibility
           if [ -f "docs/latest/index-en.html" ]; then
             mv "docs/latest/index-en.html" "docs/latest/index.html"
           fi
