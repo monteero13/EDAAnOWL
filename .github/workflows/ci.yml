@@ -54,7 +54,7 @@ jobs:
           # Valida el ejemplo mínimo usando las shapes y la ontología 'latest'
           pyshacl -s shapes/edaan-shapes.ttl \
                   -d docs/examples/minimal-example.ttl \
-                  -i docs/latest/edaan-owl.ttl \
+                  -e docs/latest/edaan-owl.ttl \
                   -m -f human -o reports/shacl-minimal.txt
           # Falla el workflow si el ejemplo mínimo no es válido
           if grep -qi "violation" reports/shacl-minimal.txt; then
