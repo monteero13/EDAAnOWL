@@ -88,14 +88,12 @@ jobs:
 
       - name: Build docs for 'latest'
         run: |
-          # Define la carpeta de salida
           OUT_DIR="docs/latest"
           ONT_PATH="docs/latest/edaan-owl.ttl"
 
           echo "Building documentation for: $ONT_PATH"
           echo "Output directory: $OUT_DIR"
 
-          # Limpiar directorio de salida (excepto la ontología)
           mkdir -p "$OUT_DIR"_backup
           cp "$ONT_PATH" "$OUT_DIR"_backup/
           # Borra todo EXCEPTO la carpeta .git que pueda estar oculta
@@ -104,31 +102,25 @@ jobs:
           mv "$OUT_DIR"_backup/edaan-owl.ttl "$OUT_DIR/"
           rm -rf "$OUT_DIR"_backup
 
-          # Genera la documentación usando la ontología en 'latest'
           java -jar widoco.jar \
             -ontFile "$ONT_PATH" \
-            -outFolder "$OUT_DIR" \ # Guarda la salida directamente en 'latest'
-            -getOntologyMetadata \ # <-- Lee metadatos del TTL
+            -outFolder "$OUT_DIR" \
+            -getOntologyMetadata \ 
             -rewriteAll \
             -webVowl \
             -htaccess \
             -lang en
 
-          # --- PASOS PARA APLANAR LA SALIDA (AÑADIDOS) ---
           echo "Flattening Widoco output directory structure..."
           # Comprueba si existe la subcarpeta 'doc'
           if [ -d "$OUT_DIR/doc" ]; then
             echo "Moving contents from $OUT_DIR/doc/ to $OUT_DIR/..."
-            # Mueve todo el contenido de doc/ al directorio padre (latest/)
             mv "$OUT_DIR"/doc/* "$OUT_DIR/"
-            # Elimina la carpeta doc/ vacía
             rmdir "$OUT_DIR/doc"
           else
              echo "No 'doc' subdirectory found. Assuming Widoco generated directly into $OUT_DIR."
           fi
-          # --- FIN DE LOS PASOS AÑADIDOS ---
 
-          # Renombra el índice para compatibilidad con GitHub Pages
           if [ -f "$OUT_DIR/index-en.html" ]; then
             echo "Renaming index file..."
             mv "$OUT_DIR/index-en.html" "$OUT_DIR/index.html"
