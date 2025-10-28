@@ -7,7 +7,7 @@
       "en" : "EDAAnOWL Ontology (Khaos UMA) — aligned with IDS Information Model"
     },
     "iri" : "https://w3id.org/EDAAnOWL/",
-    "version" : "0.2.0",
+    "version" : "0.2.1",
     "author" : [ "_:genid78" ],
     "description" : {
       "en" : "Extends IDS to describe Data Apps, Data Profiles, Metrics, Offers/Policies and their fit with BIGOWL (Algorithms, Problems, Workflows)."
@@ -52,7 +52,7 @@
       "versionInfo" : [ {
         "identifier" : "versionInfo",
         "language" : "undefined",
-        "value" : "0.2.0",
+        "value" : "0.2.1",
         "type" : "label"
       } ],
       "title" : [ {
@@ -5984,47 +5984,6 @@
         "en" : "Every 1 minutes"
       }
     }, {
-      "iri" : "https://w3id.org/EDAAnOWL/timeseries",
-      "baseIri" : "https://w3id.org/EDAAnOWL",
-      "annotations" : {
-        "inScheme" : [ {
-          "identifier" : "inScheme",
-          "language" : "undefined",
-          "value" : "https://w3id.org/EDAAnOWL/DataTypeScheme",
-          "type" : "iri"
-        }, {
-          "identifier" : "inScheme",
-          "language" : "undefined",
-          "value" : "https://w3id.org/EDAAnOWL/DataTypeScheme",
-          "type" : "iri"
-        } ],
-        "prefLabel" : [ {
-          "identifier" : "prefLabel",
-          "language" : "en",
-          "value" : "Time Series",
-          "type" : "label"
-        }, {
-          "identifier" : "prefLabel",
-          "language" : "en",
-          "value" : "Time Series",
-          "type" : "label"
-        } ],
-        "definition" : [ {
-          "identifier" : "definition",
-          "language" : "en",
-          "value" : "Data points indexed in time order",
-          "type" : "label"
-        }, {
-          "identifier" : "definition",
-          "language" : "en",
-          "value" : "Data points indexed in time order",
-          "type" : "label"
-        } ]
-      },
-      "labels" : {
-        "IRI-based" : "timeseries"
-      }
-    }, {
       "iri" : "https://w3id.org/idsa/code/BIENNIAL",
       "baseIri" : "https://w3id.org/idsa/code",
       "annotations" : {
@@ -6065,6 +6024,47 @@
       "labels" : {
         "IRI-based" : "BIENNIAL",
         "en" : "Biennial"
+      }
+    }, {
+      "iri" : "https://w3id.org/EDAAnOWL/timeseries",
+      "baseIri" : "https://w3id.org/EDAAnOWL",
+      "annotations" : {
+        "inScheme" : [ {
+          "identifier" : "inScheme",
+          "language" : "undefined",
+          "value" : "https://w3id.org/EDAAnOWL/DataTypeScheme",
+          "type" : "iri"
+        }, {
+          "identifier" : "inScheme",
+          "language" : "undefined",
+          "value" : "https://w3id.org/EDAAnOWL/DataTypeScheme",
+          "type" : "iri"
+        } ],
+        "prefLabel" : [ {
+          "identifier" : "prefLabel",
+          "language" : "en",
+          "value" : "Time Series",
+          "type" : "label"
+        }, {
+          "identifier" : "prefLabel",
+          "language" : "en",
+          "value" : "Time Series",
+          "type" : "label"
+        } ],
+        "definition" : [ {
+          "identifier" : "definition",
+          "language" : "en",
+          "value" : "Data points indexed in time order",
+          "type" : "label"
+        }, {
+          "identifier" : "definition",
+          "language" : "en",
+          "value" : "Data points indexed in time order",
+          "type" : "label"
+        } ]
+      },
+      "labels" : {
+        "IRI-based" : "timeseries"
       }
     }, {
       "iri" : "https://w3id.org/idsa/code/EVERY_30_MINUTES",
@@ -6750,58 +6750,6 @@
         "en" : "Three times a month"
       }
     }, {
-      "iri" : "https://w3id.org/EDAAnOWL/agro_olive",
-      "baseIri" : "https://w3id.org/EDAAnOWL",
-      "annotations" : {
-        "inScheme" : [ {
-          "identifier" : "inScheme",
-          "language" : "undefined",
-          "value" : "https://w3id.org/EDAAnOWL/AgroVocab",
-          "type" : "iri"
-        }, {
-          "identifier" : "inScheme",
-          "language" : "undefined",
-          "value" : "https://w3id.org/EDAAnOWL/AgroVocab",
-          "type" : "iri"
-        } ],
-        "prefLabel" : [ {
-          "identifier" : "prefLabel",
-          "language" : "en",
-          "value" : "Olive",
-          "type" : "label"
-        }, {
-          "identifier" : "prefLabel",
-          "language" : "en",
-          "value" : "Olive",
-          "type" : "label"
-        } ],
-        "definition" : [ {
-          "identifier" : "definition",
-          "language" : "en",
-          "value" : "Olive tree cultivation and oil production",
-          "type" : "label"
-        }, {
-          "identifier" : "definition",
-          "language" : "en",
-          "value" : "Olive tree cultivation and oil production",
-          "type" : "label"
-        } ],
-        "broader" : [ {
-          "identifier" : "broader",
-          "language" : "undefined",
-          "value" : "https://w3id.org/EDAAnOWL/agriculture",
-          "type" : "iri"
-        }, {
-          "identifier" : "broader",
-          "language" : "undefined",
-          "value" : "https://w3id.org/EDAAnOWL/agriculture",
-          "type" : "iri"
-        } ]
-      },
-      "labels" : {
-        "IRI-based" : "agro_olive"
-      }
-    }, {
       "iri" : "https://w3id.org/EDAAnOWL/ndvi",
       "baseIri" : "https://w3id.org/EDAAnOWL",
       "annotations" : {
@@ -6882,6 +6830,58 @@
       },
       "labels" : {
         "IRI-based" : "agro_harvest"
+      }
+    }, {
+      "iri" : "https://w3id.org/EDAAnOWL/agro_olive",
+      "baseIri" : "https://w3id.org/EDAAnOWL",
+      "annotations" : {
+        "inScheme" : [ {
+          "identifier" : "inScheme",
+          "language" : "undefined",
+          "value" : "https://w3id.org/EDAAnOWL/AgroVocab",
+          "type" : "iri"
+        }, {
+          "identifier" : "inScheme",
+          "language" : "undefined",
+          "value" : "https://w3id.org/EDAAnOWL/AgroVocab",
+          "type" : "iri"
+        } ],
+        "prefLabel" : [ {
+          "identifier" : "prefLabel",
+          "language" : "en",
+          "value" : "Olive",
+          "type" : "label"
+        }, {
+          "identifier" : "prefLabel",
+          "language" : "en",
+          "value" : "Olive",
+          "type" : "label"
+        } ],
+        "definition" : [ {
+          "identifier" : "definition",
+          "language" : "en",
+          "value" : "Olive tree cultivation and oil production",
+          "type" : "label"
+        }, {
+          "identifier" : "definition",
+          "language" : "en",
+          "value" : "Olive tree cultivation and oil production",
+          "type" : "label"
+        } ],
+        "broader" : [ {
+          "identifier" : "broader",
+          "language" : "undefined",
+          "value" : "https://w3id.org/EDAAnOWL/agriculture",
+          "type" : "iri"
+        }, {
+          "identifier" : "broader",
+          "language" : "undefined",
+          "value" : "https://w3id.org/EDAAnOWL/agriculture",
+          "type" : "iri"
+        } ]
+      },
+      "labels" : {
+        "IRI-based" : "agro_olive"
       }
     }, {
       "iri" : "https://w3id.org/idsa/code/SEMIANNUAL",
