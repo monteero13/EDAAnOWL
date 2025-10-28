@@ -1,14 +1,14 @@
 @echo off
 setlocal
 
-:: Name of the Docker image
+:: Docker image name
 set IMAGE_NAME=edaanowl-validator
 
-:: 1. Requirement: Check if Docker is running
+:: 1. Check if Docker is running
 echo --- Checking Docker status ---
 docker ps > nul 2>&1
 if %errorlevel% neq 0 (
-    echo [ERROR] Docker does not appear to be running.
+    echo [ERROR] Docker does not seem to be running.
     echo Please start Docker Desktop and try again.
     goto :eof
 )
@@ -26,26 +26,27 @@ if %errorlevel% neq 0 (
 :: 3. Run syntax validation (check_rdf.py)
 echo.
 echo --- 🚀 Running syntax validation (check_rdf.py) ---
-:: We use %cd% to mount the current directory (the root of the repo) to /app
 docker run --rm -v "%cd%:/app" %IMAGE_NAME% python3 scripts/check_rdf.py
 if %errorlevel% neq 0 (
     echo [ERROR] Syntax validation failed.
     goto :eof
 )
 
-:: 4. Run SHACL validation (minimal-example)
+:: 4. Run SHACL validation (minimal-example vs latest)
 echo.
-echo --- 🚀 Running SHACL validation (minimal-example) ---
-docker run --rm -v "%cd%:/app" %IMAGE_NAME% pyshacl -s shapes/edaan-shapes.ttl -d docs/examples/minimal-example.ttl -i docs/ontology/edaan-owl.ttl -m -f human
+echo --- 🚀 Running SHACL validation (minimal-example vs latest) ---
+:: --- PATH UPDATED for -i ---
+docker run --rm -v "%cd%:/app" %IMAGE_NAME% pyshacl -s shapes/edaan-shapes.ttl -d docs/examples/minimal-example.ttl -i docs/latest/edaan-owl.ttl -m -f human
 if %errorlevel% neq 0 (
     echo [ERROR] SHACL validation failed.
     goto :eof
 )
 
-:: 5. Run consistency validation (ROBOT)
+:: 5. Run OWL consistency validation (ROBOT on latest)
 echo.
-echo --- 🚀 Running consistency validation (ROBOT) ---
-docker run --rm -v "%cd%:/app" %IMAGE_NAME% java -jar /app/robot.jar validate --input docs/ontology/edaan-owl.ttl
+echo --- 🚀 Running OWL consistency validation (ROBOT on latest) ---
+:: --- PATH UPDATED for --input ---
+docker run --rm -v "%cd%:/app" %IMAGE_NAME% java -jar /app/robot.jar validate --input docs/latest/edaan-owl.ttl
 if %errorlevel% neq 0 (
     echo [ERROR] ROBOT consistency validation failed.
     goto :eof
@@ -53,4 +54,10 @@ if %errorlevel% neq 0 (
 
 echo.
 echo --- ✅ Local validation completed successfully ---
+
+:: --- ADDED ---
+echo.
+echo --- 🧹 Cleaning up old Docker images (dangling) ---
+docker image prune -f
+
 endlocal

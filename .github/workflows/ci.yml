@@ -2,12 +2,15 @@ name: EDAAnOWL CI/CD
 
 on:
   push:
+    branches:
+      - main # Dispara la actualización de 'latest'
   pull_request:
+  release:
+    types: [published] # Dispara la publicación de versión
   workflow_dispatch:
 
-# Necesario para poder hacer commit de /documentation
 permissions:
-  contents: write
+  contents: write # Permiso para hacer commit de los docs
 
 concurrency:
   group: edaanowl-${{ github.ref }}
@@ -17,189 +20,155 @@ jobs:
   validate:
     name: "🔍 Validate ontology & examples"
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
       - name: Install Python deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install rdflib pyshacl requests
-
+        run: pip install rdflib pyshacl requests
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: "17" # ROBOT funciona bien con 17
-
+          java-version: "17"
       - name: Download ROBOT
-        run: |
-          wget -q -O robot.jar https://github.com/ontodev/robot/releases/download/v1.9.4/robot.jar
-          java -jar robot.jar --version
+        run: wget -q -O robot.jar https://github.com/ontodev/robot/releases/download/v1.9.4/robot.jar
 
-      - name: RDF syntax check (rdflib via script)
+      - name: RDF syntax check (Python script)
+        # Verifica la sintaxis de todos los ficheros .ttl relevantes
         run: python scripts/check_rdf.py
 
-      - name: OWL profile & basic consistency (ROBOT)
+      - name: OWL consistency (ROBOT on latest)
         run: |
           mkdir -p reports
-          # validate: perfil OWL, PURLs, IRIs, etc.
-          java -jar robot.jar validate --input docs/ontology/edaan-owl.ttl --output reports/robot-validate.tsv || true
-          echo "ROBOT validate report:"
+          # Valida la ontología que está actualmente en 'latest'
+          java -jar robot.jar validate --input docs/latest/edaan-owl.ttl --output reports/robot-validate.tsv || true
           cat reports/robot-validate.tsv || true
 
-          # reason + report (clasificación con ELK; solo informativo)
-          java -jar robot.jar reason --input docs/ontology/edaan-owl.ttl --reasoner ELK --output reports/edaan-owl-classified.ttl || true
-
-      - name: SHACL (minimal example MUST pass)
+      - name: SHACL (minimal example MUST pass vs latest)
         run: |
           mkdir -p reports
-          pyshacl -s shapes/edaan-shapes.ttl -d docs/examples/minimal-example.ttl -m -f human -o reports/shacl-minimal.txt
-          echo "📄 SHACL (minimal):"
-          cat reports/shacl-minimal.txt
+          # Valida el ejemplo mínimo usando las shapes y la ontología 'latest'
+          pyshacl -s shapes/edaan-shapes.ttl \
+                  -d docs/examples/minimal-example.ttl \
+                  -i docs/latest/edaan-owl.ttl \
+                  -m -f human -o reports/shacl-minimal.txt
+          # Falla el workflow si el ejemplo mínimo no es válido
           if grep -qi "violation" reports/shacl-minimal.txt; then
             echo "❌ SHACL violations in minimal example"
             exit 1
           fi
 
-      - name: SHACL (ontology info-only)
-        run: |
-          pyshacl -s shapes/edaan-shapes.ttl -d docs/ontology/edaan-owl.ttl -m -f human -o reports/shacl-ontology.txt || true
-          echo "📄 SHACL (ontology):"
-          cat reports/shacl-ontology.txt || true
-
-      - name: Validate all examples (info-only)
-        run: |
-          mkdir -p reports
-          for ex in docs/examples/*.ttl docs/examples/**/*.ttl; do
-            if [ -f "$ex" ]; then
-              echo "Validating example: $ex"
-              java -jar robot.jar verify --input "$ex" --output-dir reports/ || echo "⚠️ Issues in $ex"
-            fi
-          done
-
-      - name: Upload reports
+      - name: Upload validation reports
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: validation-reports
           path: reports/
-          retention-days: 30
 
-  docs:
-    name: "📚 Build Widoco docs -> /docs/ontology"
+  build-latest-docs:
+    name: "📚 Build 'latest' Widoco docs"
     runs-on: ubuntu-latest
-    needs: validate
-    # Solo generamos docs en pushes a la rama principal (evita PRs escribiendo en /docs/ontology)
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-
+    needs: validate # Solo se ejecuta si la validación pasa
+    # Se ejecuta solo en push a 'main', no en PRs ni releases
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Java 11 (Widoco + ROBOT)
+      - name: Setup Java 11 (Widoco)
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: "11" # Usar Java 11 para ambas herramientas
-
-      - name: Download ROBOT (Java 11 compatible)
-        run: |
-          wget -q -O robot.jar https://github.com/ontodev/robot/releases/download/v1.9.4/robot.jar
-          java -jar robot.jar --version
-
+          java-version: "11"
       - name: Download Widoco
+        run: wget -q https://github.com/dgarijo/Widoco/releases/download/v1.4.5/widoco-1.4.5-jar-with-dependencies.jar -O widoco.jar
+
+      - name: Build docs for 'latest'
         run: |
-          WIDOCO_VERSION=1.4.5
-          wget -q https://github.com/dgarijo/Widoco/releases/download/v${WIDOCO_VERSION}/widoco-${WIDOCO_VERSION}-jar-with-dependencies.jar -O widoco.jar
-          java -jar widoco.jar -version
-
-      - name: Verify ontology file exists
-        run: |
-          if [ ! -f "docs/ontology/edaan-owl.ttl" ]; then
-            echo "❌ Error: ontology file not found at docs/ontology/edaan-owl.ttl"
-            exit 1
-          fi
-          echo "✅ Ontology file found: docs/ontology/edaan-owl.ttl"
-
-      - name: Build docs with Widoco (to /docs/ontology)
-        run: |
-          set -e
-          OUT_DIR="docs/ontology"
-          ONT_PATH="docs/ontology/edaan-owl.ttl"
-
-          test -f "$ONT_PATH" || { echo "Ontology file not found at $ONT_PATH"; exit 1; }
-
-          echo "Building documentation for: $ONT_PATH"
-          echo "Output directory: $OUT_DIR"
-
-          # Limpiar COMPLETAMENTE el directorio de salida (excepto la ontología original)
-          mkdir -p "$OUT_DIR"_backup
-          cp "$ONT_PATH" "$OUT_DIR"_backup/
-          rm -rf "$OUT_DIR"
-          mkdir -p "$OUT_DIR"
-          mv "$OUT_DIR"_backup/edaan-owl.ttl "$OUT_DIR/"
-          rm -rf "$OUT_DIR"_backup
-
-          # Genera doc directamente en el directorio final
+          # Genera la documentación usando la ontología en 'latest'
           java -jar widoco.jar \
-            -ontFile "$ONT_PATH" \
-            -outFolder "$OUT_DIR" \
+            -ontFile docs/latest/edaan-owl.ttl \
+            -outFolder docs/latest \ # Guarda la salida directamente en 'latest'
+            -getOntologyMetadata \ # <-- Lee metadatos del TTL (¡Importante!)
+            -rewriteAll \
+            -webVowl \
+            -htaccess \
+            -lang en
+          # Renombra el índice para compatibilidad con GitHub Pages
+          if [ -f "docs/latest/index-en.html" ]; then
+            mv "docs/latest/index-en.html" "docs/latest/index.html"
+          fi
+
+      - name: Commit and push 'latest' documentation
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/latest/ # Añade todos los cambios en la carpeta 'latest'
+          # Solo hace commit si los ficheros de documentación generados han cambiado
+          git diff --cached --quiet || git commit -m "chore(docs): regenerate 'latest' Widoco documentation"
+          git push
+
+  build-release-docs:
+    name: "📦 Publish Versioned Docs"
+    runs-on: ubuntu-latest
+    needs: validate # Asegura que la ontología sea válida antes de publicarla
+    # Se ejecuta solo cuando publicas una nueva release en GitHub
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - name: Checkout code for the release tag
+        uses: actions/checkout@v4
+        with:
+          # Hace checkout del código exacto del tag de la release (ej. v0.2.1)
+          ref: ${{ github.ref }}
+
+      - name: Setup Java 11 (Widoco)
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "11"
+      - name: Download Widoco
+        run: wget -q https://github.com/dgarijo/Widoco/releases/download/v1.4.5/widoco-1.4.5-jar-with-dependencies.jar -O widoco.jar
+
+      - name: Create Versioned Snapshot
+        run: |
+          # Obtiene el nombre de la tag (ej. v0.2.1) y quita la 'v' (ej. 0.2.1)
+          VERSION_NAME=$(echo ${{ github.ref_name }} | sed 's/v//')
+          VERSION_DIR="docs/$VERSION_NAME" # Define la carpeta de destino (ej. docs/0.2.1)
+
+          echo "Publishing version $VERSION_NAME to $VERSION_DIR..."
+
+          # 1. Crear directorios necesarios
+          mkdir -p "$VERSION_DIR/vocabularies"
+
+          # 2. Copiar los ficheros de esta versión específica
+          # Copia la ontología y vocabularios que estaban en 'latest'/'vocabularies' EN ESTE TAG
+          cp docs/latest/edaan-owl.ttl "$VERSION_DIR/"
+          cp docs/vocabularies/* "$VERSION_DIR/vocabularies/"
+
+          # 3. Generar los docs de Widoco para esta versión específica
+          java -jar widoco.jar \
+            -ontFile "$VERSION_DIR/edaan-owl.ttl" \ # Usa la ontología copiada
+            -outFolder "$VERSION_DIR" \ # Guarda la salida en la carpeta versionada
             -getOntologyMetadata \
             -rewriteAll \
             -webVowl \
             -htaccess \
             -lang en
 
-          # Mover contenido de doc/ al directorio principal
-          if [ -d "$OUT_DIR/doc" ]; then
-            echo "Moving documentation from doc/ to root..."
-            mv "$OUT_DIR"/doc/* "$OUT_DIR"/
-            rmdir "$OUT_DIR/doc"
+          if [ -f "$VERSION_DIR/index-en.html" ]; then
+            mv "$VERSION_DIR/index-en.html" "$VERSION_DIR/index.html"
           fi
 
-          # Actualizar rutas
-          if [ -f "$OUT_DIR/.htaccess" ]; then
-            sed -i 's|/doc/|/|g' "$OUT_DIR/.htaccess"
-            sed -i 's|doc/||g' "$OUT_DIR/.htaccess"
-          fi
-
-          find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|href="doc/|href="|g' {} \;
-          find "$OUT_DIR" -name "*.html" -type f -exec sed -i 's|src="doc/|src="|g' {} \;
-
-          # Alias a index.html
-          if [ -f "$OUT_DIR/index-en.html" ]; then
-            cp "$OUT_DIR/index-en.html" "$OUT_DIR/index.html"
-          fi
-
-          echo "✅ Final content in $OUT_DIR:"
-          ls -la "$OUT_DIR/"
-
-      - name: Upload built docs artifact
-        uses: actions/upload-artifact@v4
+      - name: Commit and push versioned documentation back to main branch
+        # Usa una acción simple para hacer commit y push
+        uses: actions-go/push@v1
         with:
-          name: widoco-documentation
-          path: docs/ontology/
-          retention-days: 14
-
-      - name: Commit and push documentation
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/ontology/
-          git diff --cached --quiet || git commit -m "chore(docs): regenerate Widoco documentation"
-          git push
+          # Publicamos las carpetas versionadas (ej. docs/0.2.1/) de vuelta a la rama 'main'
+          branch: main
+          force: false # No forzar push
+          # Mensaje de commit descriptivo
+          commit-message: "feat(docs): publish versioned documentation for ${{ github.ref_name }}"
+          github-token: ${{ secrets.GITHUB_TOKEN }} # Token necesario para hacer push

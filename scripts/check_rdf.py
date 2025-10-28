@@ -27,40 +27,43 @@ def validate_rdf_file(file_path):
 def main():
     """Main validation function"""
     print("🔍 EDAAnOWL RDF Syntax Validation")
-    
+
+    # --- PATHS UPDATED ---
     directories = [
-        "docs/ontology",
-        "docs/vocabularies", 
+        "docs/latest", # Check the main ontology in latest
+        "docs/vocabularies",
         "docs/examples",
-        "docs/examples/agriculture",
+        # Check shapes and tests in their root folders
         "shapes",
         "tests"
+        # We don't necessarily need to check versioned folders (e.g., docs/0.2.0)
+        # unless specifically required, as they should be immutable snapshots.
     ]
-    
+
     valid_files = 0
     total_files = 0
     has_errors = False
-    
+
     print(f"Checking directories: {directories}\n")
-    
+
     for directory in directories:
         if not os.path.exists(directory):
             print(f"⚠️ [WARN] Directory not found, skipping: {directory}")
             continue
-            
-        # Usamos rglob para buscar recursivamente
+
+        # Use rglob to search recursively (useful for examples)
         for file_path in Path(directory).rglob("*.ttl"):
             total_files += 1
             if validate_rdf_file(file_path):
                 valid_files += 1
             else:
                 has_errors = True
-    
+
     print(f"\n--- Validation Summary ---")
     print(f"   Total files: {total_files}")
     print(f"   Valid files: {valid_files}")
     print(f"   Invalid files: {total_files - valid_files}")
-    
+
     if has_errors:
         print("\n❌ Validation FAILED - Syntax errors found")
         sys.exit(1)
