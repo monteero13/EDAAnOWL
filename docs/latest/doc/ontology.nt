@@ -1,5 +1,5 @@
 <https://w3id.org/EDAAnOWL/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
-<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#versionIRI> <https://w3id.org/EDAAnOWL/0.2.0> .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#versionIRI> <https://w3id.org/EDAAnOWL/0.2.1> .
 <https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/BIGOWLAlgorithms/> .
 <https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/BIGOWLData/> .
 <https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#imports> <https://w3id.org/BIGOWLProblems/> .
@@ -21,7 +21,7 @@ _:genid1 <http://xmlns.com/foaf/0.1/name> "Mart\u00EDn Jer\u00F3nimo Salvach\u00
 <https://w3id.org/EDAAnOWL/> <http://purl.org/vocab/vann/preferredNamespaceUri> "https://w3id.org/EDAAnOWL/" .
 <https://w3id.org/EDAAnOWL/> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/BIGOWL/> .
 <https://w3id.org/EDAAnOWL/> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/idsa/core> .
-<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#versionInfo> "0.2.0" .
+<https://w3id.org/EDAAnOWL/> <http://www.w3.org/2002/07/owl#versionInfo> "0.2.1" .
 # 
 # 
 # #################################################################

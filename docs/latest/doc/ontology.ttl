@@ -27,7 +27,7 @@
                               <http://purl.org/vocab/vann/preferredNamespaceUri> "https://w3id.org/EDAAnOWL/"^^xsd:string ;
                               rdfs:seeAlso <https://w3id.org/BIGOWL/> ,
                                            <https://w3id.org/idsa/core> ;
-                              owl:versionInfo "0.2.0"^^xsd:string .
+                              owl:versionInfo "0.2.1"^^xsd:string .
 
 _:genid1 rdf:type <http://xmlns.com/foaf/0.1/Person> ;
           <http://xmlns.com/foaf/0.1/name> "Martín Jerónimo Salvachúa"^^xsd:string .
