@@ -88,46 +88,51 @@ jobs:
 
       - name: Build docs for 'latest'
         run: |
+          # Define variables
           OUT_DIR="docs/latest"
           ONT_PATH="docs/latest/edaan-owl.ttl"
 
           echo "Building documentation for: $ONT_PATH"
           echo "Output directory: $OUT_DIR"
 
+          # Clean output directory (preserving ontology)
           mkdir -p "$OUT_DIR"_backup
           cp "$ONT_PATH" "$OUT_DIR"_backup/
-          # Borra todo EXCEPTO la carpeta .git que pueda estar oculta
           find "$OUT_DIR" -mindepth 1 ! -name '.git' -exec rm -rf {} +
-          mkdir -p "$OUT_DIR" # Asegura que exista si estaba vacío
+          mkdir -p "$OUT_DIR"
           mv "$OUT_DIR"_backup/edaan-owl.ttl "$OUT_DIR/"
           rm -rf "$OUT_DIR"_backup
 
+          # Generate documentation
+          # --- BACKSLASHES ADDED FOR LINE CONTINUATION ---
           java -jar widoco.jar \
             -ontFile "$ONT_PATH" \
             -outFolder "$OUT_DIR" \
-            -getOntologyMetadata \ 
+            -getOntologyMetadata \
             -rewriteAll \
             -webVowl \
             -htaccess \
             -lang en
+          # --- NO BACKSLASH ON THE LAST LINE ---
 
+          # Flatten output directory
           echo "Flattening Widoco output directory structure..."
-          # Comprueba si existe la subcarpeta 'doc'
           if [ -d "$OUT_DIR/doc" ]; then
             echo "Moving contents from $OUT_DIR/doc/ to $OUT_DIR/..."
             mv "$OUT_DIR"/doc/* "$OUT_DIR/"
             rmdir "$OUT_DIR/doc"
           else
-             echo "No 'doc' subdirectory found. Assuming Widoco generated directly into $OUT_DIR."
+             echo "No 'doc' subdirectory found."
           fi
 
+          # Rename index file
           if [ -f "$OUT_DIR/index-en.html" ]; then
             echo "Renaming index file..."
             mv "$OUT_DIR/index-en.html" "$OUT_DIR/index.html"
           fi
 
           echo "Final structure in $OUT_DIR:"
-          ls -la "$OUT_DIR" # Muestra la estructura final para depuración
+          ls -la "$OUT_DIR"
 
       - name: Commit and push 'latest' documentation
         run: |
